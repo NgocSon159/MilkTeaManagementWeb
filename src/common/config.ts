@@ -1,0 +1,1 @@
+export const commonUrl = "http://localhost:3003";

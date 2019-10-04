@@ -1,0 +1,52 @@
+.App {
+    background-image: url('./images//banner.jpg');
+}
+
+#header {
+    background-color: black;
+}
+
+button:focus {
+    outline-style: none;
+}
+
+.order-btn-image {
+    border-radius: 15%;
+    height: 200px;
+    width: 200px;
+    background-image: url(./images/table.jpg);
+    margin-top: 30px;
+}
+
+.order-container {
+    flex-direction: row;
+}
+
+.table-container {
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+/* a.navLink-active {
+    color: red !important;
+} */
+
+.custom-table {
+    width: 200px;
+    border-radius: 30px;
+    background-color: #E55A1E;
+}
+
+.footer-table-full {
+    background-color: green !important;
+}
+
+.footer-table-empty {
+    background-color: red !important; 
+}
+
+div.icon {
+    top: -40px !important;
+}
