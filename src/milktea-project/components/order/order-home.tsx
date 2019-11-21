@@ -18,6 +18,7 @@ interface StateToProps {
 interface DispatchToProps {
     // setTableList: (tables: any) => void;
     getTableList: () => void;
+    // updateOrderList: (data: any) => void;
 }
 type OrderHomePropsType = StateToProps & DispatchToProps;
 
@@ -47,18 +48,18 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
         const result = tables && tables.map((table, idx) => {
             const footerClass = table.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
             const iconClass = table.statusTable === 'Empty' ? 'fa  fa-smile-o' : 'fa  fa-frown-o';
-            return <div className="small-box custom-table">
+            return <div className="small-box custom-table" key={idx}>
                 <div className="inner">
                     <h3>{table.tableId}</h3>
 
-                    <NavLink to={`/test/${table.tableId}`} style={{ color: 'white' }}>
+                    <NavLink to={`/order/${table.tableId}`} style={{ color: 'white' }}>
                         Need to {table.statusTable === 'Empty' ? 'order' : 'payment'}
                     </NavLink>
                 </div>
                 <div className="icon">
                     <i className="fa fa-coffee"></i>
                 </div>
-                <div className={`small-box-footer ${footerClass}`}>{table.statusTable === 'Empty' ? 'Empty' : 'Full'} <i className={iconClass}></i></div>
+                <div style={{borderBottomRightRadius: "25px", borderBottomLeftRadius: "25px"}} className={`small-box-footer ${footerClass}`}>{table.statusTable === 'Empty' ? 'Empty' : 'Full'} <i className={iconClass}></i></div>
             </div>
             // <button key={idx} type="button" className="order-btn-image">
             //     <NavLink to={`/test/${table.tableId}`} activeClassName='navLink-active'>Table {table.tableId}</NavLink>
@@ -83,6 +84,7 @@ export function mapStateToProps(state: ReduxState): StateToProps {
 export function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
         getTableList: () => dispatch(GetTableListAction()),
+        // updateOrderList: (data: any) => dispatch(UpdateOrderList(data))
     }
 }
 

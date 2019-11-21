@@ -28,7 +28,7 @@ export class HearderComponent extends React.Component {
                                                 
                                                 <li className="active">
                                                 {/* <a href="#banner">Home</a> */}
-                                                <NavLink to="">Order</NavLink>
+                                                <NavLink to="/order">Order</NavLink>
                                                 </li>
                                                 {/* <li><a href="#about">Order</a></li> */}
                                                 <li><a href="#menu">Drink</a></li>
