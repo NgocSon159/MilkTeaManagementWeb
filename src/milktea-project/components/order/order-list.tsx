@@ -1,10 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { routeSelector } from '../../redux/selector/RouteSelector';
-import { Table } from '../../model/Table';
 import { compose } from 'redux';
-import { RouteInfo } from '../../model/RouteInfo';
-import { RouteComponentProps } from 'react-router-dom';
 
 interface StateToProps {
     matchProp: any;
@@ -13,7 +9,6 @@ export class OrderListComponent extends React.Component<StateToProps> {
 
     public render(): React.ReactNode {
         const {matchProp = {params: {tableId: ""}}} = this.props;
-        console.log('matchProp', matchProp);
         return (
             <div className="col-md-5 col-sm-5 text-center">
                 <div className="panel">

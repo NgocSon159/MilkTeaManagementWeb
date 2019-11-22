@@ -25,12 +25,15 @@ export const SetRouteFormInfo = (routeInfos: any) => createAction({
     routeInfos
 });
 
-export const GetLoginInfo = (dataRequest: any) => createAction({
+export const  SetFormInfor = (formInfo: any) => createAction({
+    type: actionType.SET_FORM_INFO,
+    formInfo
+});
+export const GetLoginInfo = () => createAction({
     type: actionType.GET_LOGIN_INFO,
-    dataRequest
 });
 
-export const SetLoginInfo = (dataRespond: any) => createAction({
+export const SetLoginInfo = (loginInfo: any) => createAction({
     type: actionType.SET_LOGIN_INFO,
-    dataRespond
+    loginInfo
 })

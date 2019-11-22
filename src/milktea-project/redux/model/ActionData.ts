@@ -4,4 +4,6 @@ export interface ActionData{
     data?: any;
     routeInfos?: any;
     order?: any;
+    formInfo?: any;
+    loginInfo?: any;
 }

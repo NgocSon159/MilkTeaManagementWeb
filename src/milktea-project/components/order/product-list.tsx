@@ -24,12 +24,7 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
 
     public render(): React.ReactNode {
         const { tables } = this.props;
-        // const list = store.getState();
-        console.log('props-product', this.props);
         const result = tables && tables.map((table, idx) => {
-            // return <button key={idx} type="button" className="order-btn-image" >
-            //     Table {table.tableId}
-            // </button>
             return <p key={idx}>hello test {idx}</p>
         });
         return (
@@ -91,10 +86,6 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
                     </div>
                 
                 </div>
-            {/* <!-- Button trigger modal --> */}
-            {/* <button type="button" className="btn btn-primary btn-lg">
-              Launch
-            </button> */}
              <div className="modal fade" id="modelId"  role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
              <AdditionalForm />
              </div>
@@ -106,7 +97,6 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
 export function mapStateToProps(state: any): StateToProps {
     return {
         tables: tableSelector.selectAllTable(state),
-        // tables: state.globalState.tables
     }
 };
 

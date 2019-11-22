@@ -8,7 +8,6 @@ import axios from 'axios';
 
 export class TableServiceImpl implements TableService {
     getAllTableInfor(): Observable<any> {
-        debugger;
         const url = config.commonUrl + '/table';
         let result: any = [];
         axios.get(url).then(res => {

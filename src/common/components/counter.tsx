@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class HearderComponent extends React.Component {
+export class CounterComponent extends React.Component {
     state = {
         counter: 0
     };
