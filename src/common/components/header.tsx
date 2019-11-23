@@ -66,24 +66,35 @@ export class HearderComponent extends React.Component<StateToProps> {
                                             </a>
                                         </div>
                                     </div>
-                                    <div id="navbar" className="navbar-collapse collapse">
-                                        <ul className="nav navbar-nav navbar-right">
-                                            {this.renderSwitch()}
-
-                                            <li><a href="#menu">Drink</a></li>
-                                            <li><a href="#our_team">Food</a></li>
-                                            <li><a href="#gallery">Discount</a></li>
-                                            <li><a href="#reservation">Reservaion</a></li>
-                                            <li><a href="#footer">Contact us</a></li>
-                                        </ul>
+                                    <div>
+                                        <div id="navbar" className="navbar-collapse collapse">
+                                            <ul className="nav navbar-nav navbar-right">
+                                                <li className="active">
+                                                    <NavLink to="/cashier">Cashier</NavLink>
+                                                </li>
+                                                <li className="active">
+                                                {/* <a href="#banner">Home</a> */}
+                                                <NavLink to="/order">Order</NavLink>
+                                                </li>
+                                                {/* <li><a href="#about">Order</a></li> */}
+                                                <li><a href="#menu">Drink</a></li>
+                                                <li><a href="#our_team">Food</a></li>
+                                                <li><a href="#gallery">Discount</a></li>
+                                                {/* <li><a href="#blog">Blog</a></li>
+                                                <li><a href="#pricing">pricing</a></li> */}
+                                                <li><a href="#reservation">Reservaion</a></li>
+                                                <li><a href="#footer">Contact us</a></li>
+                                            </ul>
+                                        </div>
+                                        {/* <!-- end nav-collapse --> */}
                                     </div>
-                                    {/* <!-- end nav-collapse --> */}
                                 </nav>
                                 {/* <!-- end navbar --> */}
                             </div>
                         </div>
-                        {/* <!-- end row --> */}
                     </div>
+                        {/* <!-- end row --> */}
+                    
                     {/* <!-- end container-fluid --> */}
                 </header>
                 {/* <!-- end header --> */}

@@ -11,6 +11,8 @@ export function initReducer(state: any = {}, action: ActionData) {
             return { formInfo: action.formInfo };
         case actionType.SET_LOGIN_INFO:
             return { loginInfo: action.loginInfo };
+        case actionType.SET_FOOD_LIST:
+            return { food: action.food };
         default: return state;
     }
 }
