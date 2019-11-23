@@ -4,10 +4,8 @@ import { tableSelector } from '../../redux/selector/TableSelector';
 import { ReduxState } from '../../redux/model/ReduxState';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { GetTableListAction, AddTableListAction } from '../../redux/action/actions';
-import axios from 'axios';
+import { GetTableListAction, InitData } from '../../redux/action/actions';
 import { NavLink } from 'react-router-dom';
-import { ApiCall } from '../../../common/utils/callApi';
 
 interface IState {
     tableList?: Table[];
@@ -17,6 +15,7 @@ interface StateToProps {
 }
 interface DispatchToProps {
     getTableList: () => void;
+    // initData: (data: any) => void;
 }
 type OrderHomePropsType = StateToProps & DispatchToProps;
 
@@ -30,6 +29,7 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
 
     componentDidMount() {
         this.props.getTableList();
+        // this.props.initData([]);
     }
 
     public render(): React.ReactNode {
@@ -69,7 +69,8 @@ export function mapStateToProps(state: ReduxState): StateToProps {
 
 export function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
-        getTableList: () => dispatch(GetTableListAction()),
+        getTableList: () => dispatch(GetTableListAction())
+        // initData: (data) => dispatch(InitData(data))
     }
 }
 

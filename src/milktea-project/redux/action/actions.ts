@@ -6,6 +6,11 @@ function createAction<T>(d: T): T {
     return d;
 }
 
+export const InitData = (orderList: any) => createAction({
+    type: actionType.INIT_DATA,
+    orderList 
+});
+
 export const AddTableListAction = (tables: Table[]) => createAction({
     type: actionType.UPDATE_STATE,
     tables 
@@ -15,9 +20,9 @@ export const GetTableListAction = () => createAction({
     type: actionType.GET_TABLE,
 });
 
-export const UpdateOrderList = (order: any) =>createAction({
+export const UpdateOrderList = (orderList: any) =>createAction({
     type: actionType.UPDATE_ORDER_LIST,
-    order
+    orderList
 });
 
 export const SetRouteFormInfo = (routeInfos: any) => createAction({

@@ -1,3 +1,4 @@
+export const INIT_DATA = "INIT_DATA";
 export const UPDATE_STATE= "UPDATE_STATE";
 export const GET_TABLE= "GET_TABLE";
 export const SET_ROUTE = "SET_ROUTE";

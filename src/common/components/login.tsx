@@ -56,7 +56,7 @@ export class LoginComponent extends React.Component<DispatchToProps & StateToPro
         }
     }
     public render(): React.ReactNode {
-        const { username, password, isLogin } = this.state;
+        const { isLogin } = this.state;
         return (<>
             {
                 (isLogin) ? this.handleRedirect() :

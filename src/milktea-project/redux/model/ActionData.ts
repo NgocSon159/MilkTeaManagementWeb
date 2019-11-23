@@ -6,4 +6,6 @@ export interface ActionData{
     order?: any;
     formInfo?: any;
     loginInfo?: any;
+    // food?: any;
+    orderList?: any;
 }

@@ -4,6 +4,7 @@ import { tableSelector } from '../../redux/selector/TableSelector';
 import { Table } from '../../model/Table';
 import { compose } from 'redux';
 import { AdditionalForm } from './modal/additional-food';
+import { Modal } from '../../../common/components/modal';
 
 interface StateToProps {
     tables?: Table[];
@@ -14,15 +15,23 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
         this.state = ({
             openModal: false
         });
-        this.additionalModal = this.additionalModal.bind(this);
+        this.openModal = this.openModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
     }
-    additionalModal() {
+    openModal() {
         this.setState({
             openModal: true
         });
     }
+    hideModal() {
+        this.setState({
+            openModal: false
+        });
+    }
 
     public render(): React.ReactNode {
+        console.log('openModal', this.state.openModal);
+        const { openModal } = this.state;
         const { tables } = this.props;
         const result = tables && tables.map((table, idx) => {
             return <p key={idx}>hello test {idx}</p>
@@ -35,8 +44,14 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
                             <img src="http://localhost:3000/assets/images/drink-1.jpg" />
                         </div>
                         <div className="product-footer">
-                            <p>Chè BlackBall</p> 
-                            <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>
+                            <p>Chè BlackBall</p>
+                            <span data-toggle="modal"
+                                data-target={openModal}
+                                onClick={this.openModal}
+                            // data-target="#modelId"
+                            >
+                                <i className="fa fa-plus-circle" />
+                            </span>
                         </div>
                     </div>
                     <div className="product-item">
@@ -45,7 +60,7 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
                         </div>
                         <div className="product-footer">
                             <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
+                            <span><i className="fa fa-plus-circle" /></span>
                         </div>
                     </div>
                     <div className="product-item">
@@ -54,7 +69,7 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
                         </div>
                         <div className="product-footer">
                             <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
+                            <span><i className="fa fa-plus-circle" /></span>
                         </div>
                     </div>
                     <div className="product-item">
@@ -63,7 +78,7 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
                         </div>
                         <div className="product-footer">
                             <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
+                            <span><i className="fa fa-plus-circle" /></span>
                         </div>
                     </div>
                     <div className="product-item">
@@ -72,7 +87,7 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
                         </div>
                         <div className="product-footer">
                             <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
+                            <span><i className="fa fa-plus-circle" /></span>
                         </div>
                     </div>
                     <div className="product-item">
@@ -81,14 +96,17 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
                         </div>
                         <div className="product-footer">
                             <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
+                            <span><i className="fa fa-plus-circle" /></span>
                         </div>
                     </div>
-                
+
                 </div>
-             <div className="modal fade" id="modelId"  role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-             <AdditionalForm />
-             </div>
+                <Modal show={openModal} handleClose={this.hideModal}>
+                    <AdditionalForm closeModal={this.hideModal}/>
+                </Modal>
+                {/* <div className="modal fade" id="modelId" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <AdditionalForm />
+                </div> */}
             </div>
         )
     };

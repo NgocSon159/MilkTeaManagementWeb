@@ -95,7 +95,7 @@ export class HearderComponent extends React.Component<StateToProps> {
 
 export function mapStateToProps(state: any): StateToProps {
     return {
-        loginInfo: state.globalState.loginInfo
+        loginInfo: state.globalState.loginInfo,
     }
 }
 
