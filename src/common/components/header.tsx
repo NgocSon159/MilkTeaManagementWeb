@@ -65,6 +65,8 @@ export class HearderComponent extends React.Component<StateToProps> {
                                                 <img src="assets/images/logo.png" alt="" />
                                             </a>
                                         </div>
+                                    </div>
+                                    <div>
                                         <div id="navbar" className="navbar-collapse collapse">
                                             <ul className="nav navbar-nav navbar-right">
                                                 <li className="active">

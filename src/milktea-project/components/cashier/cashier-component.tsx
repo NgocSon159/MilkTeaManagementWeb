@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 
-import {AdditionalForm} from "../order/modal/additional-food";
+import {Bill} from "../cashier/Form/Bill";
 
 
 export class CashierComponent extends React.Component {
@@ -81,6 +81,9 @@ export class CashierComponent extends React.Component {
                     {/*    <AdditionalForm />*/}
                     {/*</div>*/}
                 </div>
+                <div className="modal fade" id="modelId"  role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                    <Bill />
+                </div>
                 <div className="col-md-5 col-sm-5 text-center">
                     <div className="panel">
                         <div className="panel-heading">
@@ -151,7 +154,8 @@ export class CashierComponent extends React.Component {
                                     <button className="btn btn-secondary"
                                             type="button"
                                             aria-label=""
-                                            onClick={this.additionalModal} >Pay
+                                            onClick={this.additionalModal}
+                                            data-toggle="modal" data-target="#modelId">Pay
                                     </button>
                                 </div>
                             </div>
