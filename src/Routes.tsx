@@ -12,8 +12,7 @@ export const MilkTeaRoutes: React.FunctionComponent = (props: any) => (
         <Route exact path="/order/:tableId" component={OrderTableForm} name="test" />
         <Route exact path="/login" component={LoginComponent} />
         <Route exact path="/kitchen" component={KitchenHomeComponent} />
+      <Route exact path="/cashier" component={CashierComponent} />
     </Switch>
-        <Route exact path="/cashier" component={CashierComponent} />
 
-        </Switch>
-)
+);
