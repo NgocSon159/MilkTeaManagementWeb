@@ -16,9 +16,7 @@ interface StateToProps {
     tables?: Table[];
 }
 interface DispatchToProps {
-    // setTableList: (tables: any) => void;
     getTableList: () => void;
-    // updateOrderList: (data: any) => void;
 }
 type OrderHomePropsType = StateToProps & DispatchToProps;
 
@@ -29,22 +27,13 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
             tableList: []
         };
     }
-    // public static defaulProps: Partial<StateToProps> = {
-    //     tables: [{ tableId: '1', status: 'empty' }, { tableId: '2', status: 'full' }]
-    // };
+
     componentDidMount() {
-        // ApiCall('get', 'table', null).then(res => {
-        //     this.setState({
-        //         tableList: res.data
-        //     });
-            // this.props.setTableList(res.data);
-        // });
         this.props.getTableList();
     }
 
     public render(): React.ReactNode {
         const { tables } = this.props;
-        // const { tableList } = this.state;
         const result = tables && tables.map((table, idx) => {
             const footerClass = table.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
             const iconClass = table.statusTable === 'Empty' ? 'fa  fa-smile-o' : 'fa  fa-frown-o';
@@ -59,11 +48,8 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
                 <div className="icon">
                     <i className="fa fa-coffee"></i>
                 </div>
-                <div style={{borderBottomRightRadius: "25px", borderBottomLeftRadius: "25px"}} className={`small-box-footer ${footerClass}`}>{table.statusTable === 'Empty' ? 'Empty' : 'Full'} <i className={iconClass}></i></div>
+                <div style={{ borderBottomRightRadius: "25px", borderBottomLeftRadius: "25px" }} className={`small-box-footer ${footerClass}`}>{table.statusTable === 'Empty' ? 'Empty' : 'Full'} <i className={iconClass}></i></div>
             </div>
-            // <button key={idx} type="button" className="order-btn-image">
-            //     <NavLink to={`/test/${table.tableId}`} activeClassName='navLink-active'>Table {table.tableId}</NavLink>
-            // </button>
         });
         return (
             <div>
@@ -84,7 +70,6 @@ export function mapStateToProps(state: ReduxState): StateToProps {
 export function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
         getTableList: () => dispatch(GetTableListAction()),
-        // updateOrderList: (data: any) => dispatch(UpdateOrderList(data))
     }
 }
 

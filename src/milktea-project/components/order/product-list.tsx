@@ -1,14 +1,18 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { tableSelector } from '../../redux/selector/TableSelector';
-import { Table } from '../../model/Table';
+import { foodSelector } from '../../redux/selector/FoodSelector';
+import { Food } from '../../model/Food';
 import { compose } from 'redux';
 import { AdditionalForm } from './modal/additional-food';
+import {GetFoodListAction} from "../../redux/action/actions";
 
 interface StateToProps {
-    tables?: Table[];
+    food?: Food[];
 }
-export class ProductListComponent extends React.Component<StateToProps, any> {
+interface DispatchToProps {
+    getFoodList: () => void;
+}
+export class ProductListComponent extends React.Component<StateToProps & DispatchToProps, any> {
     constructor(props: any) {
         super(props);
         this.state = ({
@@ -22,79 +26,96 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
         });
     }
 
+    componentDidMount() {
+        this.props.getFoodList();
+    }
+
     public render(): React.ReactNode {
-        const { tables } = this.props;
-        // const list = store.getState();
-        console.log('props-product', this.props);
-        const result = tables && tables.map((table, idx) => {
-            // return <button key={idx} type="button" className="order-btn-image" >
-            //     Table {table.tableId}
-            // </button>
-            return <p key={idx}>hello test {idx}</p>
+        const { food } = this.props;
+        const result = food && food.map((item, idx) => {
+            return <>
+                <div className="product-item">
+                    <div className="product-img">
+                        <img src={item.image}  />
+                    </div>
+                    <div className="product-footer">
+                        <p>{item.name}</p>
+                        <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>
+                    </div>
+                </div>
+                </>
         });
         return (
             <div className="col-md-7 col-sm-7 text-center">
                 <div className="panel product-list">
-                    <div className="product-item">
-                        <div className="product-img">
-                            <img src="http://localhost:3000/assets/images/drink-1.jpg" />
-                        </div>
-                        <div className="product-footer">
-                            <p>Chè BlackBall</p> 
-                            <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>
-                        </div>
-                    </div>
-                    <div className="product-item">
-                        <div className="product-img">
-                            <img src="http://localhost:3000/assets/images/drink-1.jpg" />
-                        </div>
-                        <div className="product-footer">
-                            <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
-                        </div>
-                    </div>
-                    <div className="product-item">
-                        <div className="product-img">
-                            <img src="http://localhost:3000/assets/images/drink-1.jpg" />
-                        </div>
-                        <div className="product-footer">
-                            <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
-                        </div>
-                    </div>
-                    <div className="product-item">
-                        <div className="product-img">
-                            <img src="http://localhost:3000/assets/images/drink-1.jpg" />
-                        </div>
-                        <div className="product-footer">
-                            <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
-                        </div>
-                    </div>
-                    <div className="product-item">
-                        <div className="product-img">
-                            <img src="http://localhost:3000/assets/images/drink-1.jpg" />
-                        </div>
-                        <div className="product-footer">
-                            <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
-                        </div>
-                    </div>
-                    <div className="product-item">
-                        <div className="product-img">
-                            <img src="http://localhost:3000/assets/images/drink-1.jpg" />
-                        </div>
-                        <div className="product-footer">
-                            <p>Chè BlackBall</p>
-                            <span><i className="fa fa-plus-circle"/></span>
-                        </div>
-                    </div>
-                
+                    {/*<div className="product-item">*/}
+                    {/*    <div className="product-img">*/}
+                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
+                    {/*    </div>*/}
+                    {/*    <div className="product-footer">*/}
+                    {/*        <p>Chè BlackBall</p>*/}
+                    {/*        <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {
+                        result
+                    }
+                    {/*<div className="product-item">*/}
+                    {/*    <div className="product-img">*/}
+                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
+                    {/*    </div>*/}
+                    {/*    <div className="product-footer">*/}
+                    {/*        <p>Chè BlackBall</p>*/}
+                    {/*        <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="product-item">*/}
+                    {/*    <div className="product-img">*/}
+                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
+                    {/*    </div>*/}
+                    {/*    <div className="product-footer">*/}
+                    {/*        <p>Chè BlackBall</p>*/}
+                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="product-item">*/}
+                    {/*    <div className="product-img">*/}
+                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
+                    {/*    </div>*/}
+                    {/*    <div className="product-footer">*/}
+                    {/*        <p>Chè BlackBall</p>*/}
+                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="product-item">*/}
+                    {/*    <div className="product-img">*/}
+                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
+                    {/*    </div>*/}
+                    {/*    <div className="product-footer">*/}
+                    {/*        <p>Chè BlackBall</p>*/}
+                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="product-item">*/}
+                    {/*    <div className="product-img">*/}
+                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
+                    {/*    </div>*/}
+                    {/*    <div className="product-footer">*/}
+                    {/*        <p>Chè BlackBall</p>*/}
+                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+                    {/*<div className="product-item">*/}
+                    {/*    <div className="product-img">*/}
+                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
+                    {/*    </div>*/}
+                    {/*    <div className="product-footer">*/}
+                    {/*        <p>Chè BlackBall</p>*/}
+                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
+
                 </div>
-            {/* <!-- Button trigger modal --> */}
-            {/* <button type="button" className="btn btn-primary btn-lg">
-              Launch
-            </button> */}
              <div className="modal fade" id="modelId"  role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
              <AdditionalForm />
              </div>
@@ -105,12 +126,17 @@ export class ProductListComponent extends React.Component<StateToProps, any> {
 
 export function mapStateToProps(state: any): StateToProps {
     return {
-        tables: tableSelector.selectAllTable(state),
-        // tables: state.globalState.tables
+        food: foodSelector.selectAllFood(state),
     }
 };
 
+export function mapDispatchToProps(dispatch: any): DispatchToProps {
+    return {
+        getFoodList: () => dispatch(GetFoodListAction()),
+    }
+}
 
-const withConnect = connect(mapStateToProps, null);
+
+const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
 export const ProductListForm = compose(withConnect)(ProductListComponent);

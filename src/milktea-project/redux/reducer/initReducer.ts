@@ -7,8 +7,12 @@ export function initReducer(state: any = {}, action: ActionData) {
             return { tables: action.tables };
         case actionType.UPDATE_ORDER_LIST:
             return { orderlist: [...state.globalState.orderlist, action.order] };
-        case actionType.SET_ROUTE:
-            return { routeInfos: action.routeInfos };
+        case actionType.SET_FORM_INFO:
+            return { formInfo: action.formInfo };
+        case actionType.SET_LOGIN_INFO:
+            return { loginInfo: action.loginInfo };
+        case actionType.SET_FOOD_LIST:
+            return { food: action.food };
         default: return state;
     }
 }

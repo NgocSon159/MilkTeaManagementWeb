@@ -8,7 +8,7 @@ function createAction<T>(d: T): T {
 
 export const AddTableListAction = (tables: Table[]) => createAction({
     type: actionType.UPDATE_STATE,
-    tables 
+    tables
 });
 
 export const GetTableListAction = () => createAction({
@@ -25,12 +25,25 @@ export const SetRouteFormInfo = (routeInfos: any) => createAction({
     routeInfos
 });
 
-export const GetLoginInfo = (dataRequest: any) => createAction({
-    type: actionType.GET_LOGIN_INFO,
-    dataRequest
+export const  SetFormInfor = (formInfo: any) => createAction({
+    type: actionType.SET_FORM_INFO,
+    formInfo
 });
 
-export const SetLoginInfo = (dataRespond: any) => createAction({
+export const GetLoginInfo = () => createAction({
+    type: actionType.GET_LOGIN_INFO,
+});
+
+export const SetLoginInfo = (loginInfo: any) => createAction({
     type: actionType.SET_LOGIN_INFO,
-    dataRespond
-})
+    loginInfo
+});
+
+export const GetFoodListAction = () => createAction({
+    type: actionType.GET_FOOD_LIST,
+});
+
+export const SetFoodToStoreAction = (food: any) => createAction({
+    type: actionType.SET_FOOD_LIST,
+    food
+});

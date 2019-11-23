@@ -4,3 +4,6 @@ export const SET_ROUTE = "SET_ROUTE";
 export const UPDATE_ORDER_LIST = "UPDATE_ORDER_LIST";
 export const GET_LOGIN_INFO = "GET_LOGIN_INFO";
 export const SET_LOGIN_INFO = "SET_LOGIN_INFO";
+export const SET_FORM_INFO = "SET_FORM_INFO";
+export const GET_FOOD_LIST = "GET_FOOD_LIST";
+export const SET_FOOD_LIST = "SET_FOOD_LIST";

@@ -5,7 +5,6 @@ import { OrderTableForm } from './milktea-project/components/order/order-table';
 import { LoginComponent } from './common/components/login';
 import { CashierComponent } from './milktea-project/components/cashier/cashier-component';
 
-export const role = "rStaff";
 export const MilkTeaRoutes: React.FunctionComponent = (props: any) => (
     <Switch>
         <Route exact path="/order" component={OrderHomeForm} />
