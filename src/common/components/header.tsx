@@ -25,7 +25,9 @@ export class HearderComponent extends React.Component {
                                         </div>
                                         <div id="navbar" className="navbar-collapse collapse">
                                             <ul className="nav navbar-nav navbar-right">
-                                                
+                                                <li className="active">
+                                                    <NavLink to="/cashier">Cashier</NavLink>
+                                                </li>
                                                 <li className="active">
                                                 {/* <a href="#banner">Home</a> */}
                                                 <NavLink to="/order">Order</NavLink>
