@@ -3,12 +3,17 @@ import { UpdateOrderList } from '../../../redux/action/actions';
 import { connect } from 'react-redux';
 
 interface StateToProps {
+    foodInfo: any;
+    closeModal: any;
 }
 
 interface DispatchToProps {
     addOrderFood: (data: any) => void;
 }
 export default class AdditionalComponent extends React.Component<StateToProps & DispatchToProps> {
+    constructor(props: any) {
+        super(props)
+    }
     additionalList = [
         {
             name: 'chocolate',
@@ -40,6 +45,11 @@ export default class AdditionalComponent extends React.Component<StateToProps & 
         autocompleteValue: '',
         counter: 1
     };
+
+    componentDidMount(): void {
+        console.log("props", this.props);
+    }
+
 
     onAddOrder = () => {
 
@@ -83,7 +93,21 @@ export default class AdditionalComponent extends React.Component<StateToProps & 
             });
         }
     }
+
+    closeModal = () => {
+        this.props.closeModal();
+    }
+
     public render(): React.ReactNode {
+        const {foodInfo} = this.props;
+        const renderSize: JSX.Element[] = [];
+        if(foodInfo) {
+            // @ts-ignore
+            foodInfo.map((item, index) => {
+                const element = <><input name="size-input" type="radio" value="S"/> <label>{item.size.substring(0, 1)}</label></>;
+                renderSize.push(element);
+            })
+        }
         const autoList = this.state.autocompleteList && this.state.autocompleteList.map((item, idx) => {
             return <li key={idx} onClick={() => this.getAddValue(item)}>{item['name']}</li>
         })
@@ -92,7 +116,7 @@ export default class AdditionalComponent extends React.Component<StateToProps & 
                 <div className="modal-content">
                     <div className="modal-header">
                         <h5 className="modal-title">Modal title</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" onClick={this.closeModal} className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -100,17 +124,20 @@ export default class AdditionalComponent extends React.Component<StateToProps & 
                         {/* <div style={{ width: "100%" }}> */}
                         <div className="col-md-4 col-sm-4">
                             {/* <div className="product-img"> */}
-                            <img src="http://localhost:3000/assets/images/drink-1.jpg" className="img-item" />
+                            <img src={foodInfo[0].image} className="img-item" />
                             {/* </div> */}
-                            <span>Price: 45.000 vnd</span>
+                            <span>{foodInfo[0].name}</span>
                         </div>
                         <div className="col-md-8 col-sm-8">
                             <div className="group-item">
                                 <span>Size:</span>
                                 <div className="size-info">
-                                    <input name="size-input" type="radio" value="S"/> <label>S</label>
-                                    <input name="size-input" type="radio" value="M"/> <label>M</label>
-                                    <input name="size-input" type="radio" value="L"/> <label>L</label>
+                                    {/*<input name="size-input" type="radio" value="S"/> <label>S</label>*/}
+                                    {/*<input name="size-input" type="radio" value="M"/> <label>M</label>*/}
+                                    {/*<input name="size-input" type="radio" value="L"/> <label>L</label>*/}
+                                    {
+                                        renderSize
+                                    }
                                 </div>
                             </div>
                             {/* <div className="group-item">
@@ -156,7 +183,7 @@ export default class AdditionalComponent extends React.Component<StateToProps & 
                             </div>
                             <div className="group-item">
                                 <span className="price-info">Price:</span>
-                                <label className="price-input">45.000 vnd</label>
+                                <label className="price-input">{foodInfo[0].price.toLocaleString()} vnd</label>
                             </div>
                         </div>
                     </div>
@@ -175,7 +202,8 @@ export default class AdditionalComponent extends React.Component<StateToProps & 
 
 export function mapStateToProps(state: any): StateToProps {
     return {
-
+        foodInfo: state,
+        closeModal: state
     }
 };
 

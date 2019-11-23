@@ -16,13 +16,25 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
     constructor(props: any) {
         super(props);
         this.state = ({
-            openModal: false
+            openModal: false,
+            foodItem: []
         });
         this.additionalModal = this.additionalModal.bind(this);
     }
-    additionalModal() {
+    // @ts-ignore
+    additionalModal = (foodItem) =>  {
+        const { food } = this.props;
+        // @ts-ignore
+        const arr = food.filter(item => item.name === foodItem.name);
         this.setState({
-            openModal: true
+            openModal: true,
+            foodItem: arr
+        });
+    };
+
+    closeModal = () => {
+        this.setState({
+            openModal: false,
         });
     }
 
@@ -32,92 +44,44 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
 
     public render(): React.ReactNode {
         const { food } = this.props;
-        const result = food && food.map((item, idx) => {
-            return <>
-                <div className="product-item">
-                    <div className="product-img">
-                        <img src={item.image}  />
+        const {openModal, foodItem} = this.state;
+        const resultAll: JSX.Element[] = [];
+        const foodItemArr: string[] = [];
+        if(food) {
+            food.map((item, idx) => {
+                let elementFood;
+                // @ts-ignore
+                elementFood =  <>
+                    <div className="product-item">
+                        <div className="product-img">
+                            <img src={item.image}  />
+                        </div>
+                        <div className="product-footer">
+                            <p>{item.name}</p>
+                            <span onClick={() => this.additionalModal(item)} data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>
+                        </div>
                     </div>
-                    <div className="product-footer">
-                        <p>{item.name}</p>
-                        <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>
-                    </div>
-                </div>
-                </>
-        });
+                </>;
+
+                // @ts-ignore
+                if(foodItemArr.indexOf(item.name) < 0) {
+                    // @ts-ignore
+                    foodItemArr.push(item.name);
+                    resultAll.push(elementFood);
+                }
+            });
+        }
         return (
             <div className="col-md-7 col-sm-7 text-center">
                 <div className="panel product-list">
-                    {/*<div className="product-item">*/}
-                    {/*    <div className="product-img">*/}
-                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
-                    {/*    </div>*/}
-                    {/*    <div className="product-footer">*/}
-                    {/*        <p>Chè BlackBall</p>*/}
-                    {/*        <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
                     {
-                        result
+                        resultAll
                     }
-                    {/*<div className="product-item">*/}
-                    {/*    <div className="product-img">*/}
-                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
-                    {/*    </div>*/}
-                    {/*    <div className="product-footer">*/}
-                    {/*        <p>Chè BlackBall</p>*/}
-                    {/*        <span onClick={this.additionalModal}  data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className="product-item">*/}
-                    {/*    <div className="product-img">*/}
-                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
-                    {/*    </div>*/}
-                    {/*    <div className="product-footer">*/}
-                    {/*        <p>Chè BlackBall</p>*/}
-                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className="product-item">*/}
-                    {/*    <div className="product-img">*/}
-                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
-                    {/*    </div>*/}
-                    {/*    <div className="product-footer">*/}
-                    {/*        <p>Chè BlackBall</p>*/}
-                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className="product-item">*/}
-                    {/*    <div className="product-img">*/}
-                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
-                    {/*    </div>*/}
-                    {/*    <div className="product-footer">*/}
-                    {/*        <p>Chè BlackBall</p>*/}
-                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className="product-item">*/}
-                    {/*    <div className="product-img">*/}
-                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
-                    {/*    </div>*/}
-                    {/*    <div className="product-footer">*/}
-                    {/*        <p>Chè BlackBall</p>*/}
-                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-                    {/*<div className="product-item">*/}
-                    {/*    <div className="product-img">*/}
-                    {/*        <img src="http://localhost:3000/assets/images/drink-1.jpg" />*/}
-                    {/*    </div>*/}
-                    {/*    <div className="product-footer">*/}
-                    {/*        <p>Chè BlackBall</p>*/}
-                    {/*        <span><i className="fa fa-plus-circle"/></span>*/}
-                    {/*    </div>*/}
-                    {/*</div>*/}
-
                 </div>
              <div className="modal fade" id="modelId"  role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-             <AdditionalForm />
+                 {
+                    openModal ? <AdditionalForm foodInfo={foodItem} closeModal={this.closeModal}/> : ""
+                 }
              </div>
             </div>
         )
