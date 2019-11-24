@@ -135,11 +135,11 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
     }
 
     public render(): React.ReactNode {
-        const {foodInfo} = this.props;
-        const renderSize: JSX.Element[] = [];
+        const {foodInfo = []} = this.props;
+        const renderSize: any = [];
         if(foodInfo) {
-            // @ts-ignore
-            foodInfo.map((item, index) => {
+            foodInfo.map((item: any, index: any) => {
+                console.log('item-modal', item);
                 const element = <><input name="size-input" type="radio" value="S"/> <label>{item.size.substring(0, 1)}</label></>;
                 renderSize.push(element);
             })
@@ -163,9 +163,13 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
                         {/* <div style={{ width: "100%" }}> */}
                         <div className="col-md-4 col-sm-4">
                             {/* <div className="product-img"> */}
-                            <img src={foodInfo[0].image} className="img-item" />
+                            {/* ---------------- */}
+
+                            <img src={foodInfo[0] && foodInfo[0].image} className="img-item" />
+                            {/* -------------------- */}
+
                             {/* </div> */}
-                            <span>{foodInfo[0].name}</span>
+                            <span>{foodInfo[0] && foodInfo[0].name}</span>
                         </div>
                         <div className="col-md-8 col-sm-8">
                             <div className="group-item">
@@ -239,7 +243,7 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
                             </div>
                             <div className="group-item">
                                 <span className="price-info">Price:</span>
-                                <label className="price-input">{foodInfo[0].price.toLocaleString()} vnd</label>
+                                <label className="price-input">{foodInfo[0] && foodInfo[0].price.toLocaleString()} vnd</label>
                             </div>
                         </div>
                     </div>

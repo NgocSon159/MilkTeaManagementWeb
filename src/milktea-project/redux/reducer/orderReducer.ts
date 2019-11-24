@@ -2,7 +2,7 @@ import { ActionData } from './../model/ActionData';
 import * as actionType from '../action/actionTypes';
 
 export function orderReducer(state: any = {}, action: ActionData) {
-  debugger;
+  // debugger;
     switch (action.type) {
         // case actionType.INIT_DATA:
         //   return {orderList: []}

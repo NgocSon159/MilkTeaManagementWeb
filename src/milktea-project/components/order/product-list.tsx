@@ -35,12 +35,6 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
         });
     };
 
-    // closeModal = () => {
-    //     this.setState({
-    //         openModal: false,
-    //     });
-    // }
-
     componentDidMount() {
         this.props.getFoodList();
     }
@@ -88,7 +82,7 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
                     <AdditionalForm />
                 </div> */}
                             <p>{item.name}</p>
-                            {/* <span onClick={() => this.openModal(item)} data-toggle="modal" data-target="#modelId"><i className="fa fa-plus-circle"/></span> */}
+                            <span onClick={() => this.openModal(item)}><i className="fa fa-plus-circle"/></span>
                         </div>
                     </div>
                 </>;
@@ -108,11 +102,7 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
                         resultAll
                     }
                 </div>
-             {/* <div className="modal fade" id="modelId"  role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                 {
-                    openModal ? <AdditionalForm foodInfo={foodItem} closeModal={this.closeModal}/> : ""
-                 }
-             </div> */}
+            
               <Modal show={openModal} handleClose={this.hideModal}>
                     <AdditionalForm foodInfo={foodItem} closeModal={this.hideModal}/>
                 </Modal>

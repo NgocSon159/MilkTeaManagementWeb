@@ -10,14 +10,14 @@ interface StateToProps {
     orderList?: any;
 }
 export class OrderListComponent extends React.Component<IProps & StateToProps> {
-    constructor(props: any){
+    constructor(props: any) {
         super(props);
     }
 
     public render(): React.ReactNode {
         console.log('props', this.props.orderList);
-        const { matchProp = { params: { tableId: "" } } } = this.props;
-        const foods = this.props.orderList && this.props.orderList.map((food: any, idx: any) => {
+        const { matchProp = { params: { tableId: "" } }, orderList } = this.props;
+        const foods = orderList && orderList.map((food: any, idx: any) => {
             return <tr key={idx}>
                 <td scope="row">{food.name}</td>
                 <td>{food.size}</td>
@@ -54,16 +54,6 @@ export class OrderListComponent extends React.Component<IProps & StateToProps> {
                             </thead>
                             <tbody>
                                 {foods}
-                                {/* <tr>
-                                    <td scope="row">hi</td>
-                                    <td>hi</td>
-                                    <td>hi</td>
-                                    <td>hi</td>
-                                    <td>
-                                        <span><i className="fa fa-minus-circle" /></span>
-                                        <span><i className="fa fa-pencil-square" /></span>
-                                    </td>
-                                </tr> */}
                             </tbody>
                         </table>
                         <div className="sub-panel-footer">
@@ -77,14 +67,6 @@ export class OrderListComponent extends React.Component<IProps & StateToProps> {
                             </div>
                         </div>
                     </div>
-                    {/* <ul className="list-group text-center">
-                                <li className="list-group-item"><i className="fa fa-check"></i> One Website</li>
-                                <li className="list-group-item"><i className="fa fa-check"></i> One User</li>
-                                <li className="list-group-item"><i className="fa fa-check"></i> 10 GB Bandwidth</li>
-                                <li className="list-group-item"><i className="fa fa-times"></i> 2GB Storage</li>
-                                <li className="list-group-item"><i className="fa fa-times"></i> Offline work</li>
-                                <li className="list-group-item"><i className="fa fa-check"></i> 24x7 Support</li>
-                            </ul> */}
                     <div className="panel-footer">
                         <div className="input-group">
                             <button className="btn btn-secondary" type="button" aria-label="">Cancel</button>

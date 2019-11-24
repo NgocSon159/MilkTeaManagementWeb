@@ -69,13 +69,7 @@ export class HearderComponent extends React.Component<StateToProps> {
                                     <div>
                                         <div id="navbar" className="navbar-collapse collapse">
                                             <ul className="nav navbar-nav navbar-right">
-                                                <li className="active">
-                                                    <NavLink to="/cashier">Cashier</NavLink>
-                                                </li>
-                                                <li className="active">
-                                                {/* <a href="#banner">Home</a> */}
-                                                <NavLink to="/order">Order</NavLink>
-                                                </li>
+                                                {this.renderSwitch()}
                                                 {/* <li><a href="#about">Order</a></li> */}
                                                 <li><a href="#menu">Drink</a></li>
                                                 <li><a href="#our_team">Food</a></li>
