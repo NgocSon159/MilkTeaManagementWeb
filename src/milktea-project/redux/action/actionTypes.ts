@@ -1,3 +1,4 @@
+export const INIT_DATA = "INIT_DATA";
 export const UPDATE_STATE= "UPDATE_STATE";
 export const GET_TABLE= "GET_TABLE";
 export const SET_ROUTE = "SET_ROUTE";
@@ -7,3 +8,5 @@ export const SET_LOGIN_INFO = "SET_LOGIN_INFO";
 export const SET_FORM_INFO = "SET_FORM_INFO";
 export const GET_FOOD_LIST = "GET_FOOD_LIST";
 export const SET_FOOD_LIST = "SET_FOOD_LIST";
+export const SET_PAGE_LIST_FOOD = "SET_PAGE_LIST_FOOD";
+

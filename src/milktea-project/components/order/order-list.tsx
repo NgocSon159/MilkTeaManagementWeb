@@ -1,14 +1,34 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { compose } from 'redux';
+import { orderSelector } from '../../redux/selector/OrderSelector';
 
-interface StateToProps {
-    matchProp: any;
+interface IProps {
+    matchProp?: any;
 }
-export class OrderListComponent extends React.Component<StateToProps> {
+interface StateToProps {
+    // matchProp?: any;
+    orderList?: any;
+}
+export class OrderListComponent extends React.Component<IProps & StateToProps> {
+    constructor(props: any) {
+        super(props);
+    }
 
     public render(): React.ReactNode {
-        const {matchProp = {params: {tableId: ""}}} = this.props;
+        console.log('props', this.props.orderList);
+        const { matchProp = { params: { tableId: "" } }, orderList } = this.props;
+        const foods = orderList && orderList.map((food: any, idx: any) => {
+            return <tr key={idx}>
+                <td scope="row">{food.name}</td>
+                <td>{food.size}</td>
+                <td>{food.sugarPercent}% - {food.icePercent}%</td>
+                <td>{food.price}</td>
+                <td>
+                    <span><i className="fa fa-minus-circle" /></span>
+                    <span><i className="fa fa-pencil-square" /></span>
+                </td>
+            </tr>
+        });
         return (
             <div className="col-md-5 col-sm-5 text-center">
                 <div className="panel">
@@ -27,22 +47,13 @@ export class OrderListComponent extends React.Component<StateToProps> {
                                 <tr>
                                     <th>Product Name</th>
                                     <th>Size</th>
-                                    <th>Additional</th>
+                                    <th>Note</th>
                                     <th>Price</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td scope="row">hi</td>
-                                    <td>hi</td>
-                                    <td>hi</td>
-                                    <td>hi</td>
-                                    <td>
-                                        <span><i className="fa fa-minus-circle" /></span>
-                                        <span><i className="fa fa-pencil-square" /></span>
-                                    </td>
-                                </tr>
+                                {foods}
                             </tbody>
                         </table>
                         <div className="sub-panel-footer">
@@ -56,14 +67,6 @@ export class OrderListComponent extends React.Component<StateToProps> {
                             </div>
                         </div>
                     </div>
-                    {/* <ul className="list-group text-center">
-                                <li className="list-group-item"><i className="fa fa-check"></i> One Website</li>
-                                <li className="list-group-item"><i className="fa fa-check"></i> One User</li>
-                                <li className="list-group-item"><i className="fa fa-check"></i> 10 GB Bandwidth</li>
-                                <li className="list-group-item"><i className="fa fa-times"></i> 2GB Storage</li>
-                                <li className="list-group-item"><i className="fa fa-times"></i> Offline work</li>
-                                <li className="list-group-item"><i className="fa fa-check"></i> 24x7 Support</li>
-                            </ul> */}
                     <div className="panel-footer">
                         <div className="input-group">
                             <button className="btn btn-secondary" type="button" aria-label="">Cancel</button>
@@ -76,15 +79,10 @@ export class OrderListComponent extends React.Component<StateToProps> {
     };
 }
 
-// export function mapStateToProps(state: any): StateToProps {
-//     return {
-//         // tables: tableSelector.selectAllTable(state),
-        // tables: state.globalState.tables
-//         routeInfos: routeSelector.selectRouteInfo(state)
-//     }
-// };
+export function mapStateToProps(state: any): StateToProps {
+    return {
+        orderList: orderSelector.selectOrderList(state)
+    }
+};
 
-
-const withConnect = connect(null, null);
-
-export const OrderListForm = compose(withConnect)(OrderListComponent);
+export const OrderListForm = connect(mapStateToProps, null)(OrderListComponent);
