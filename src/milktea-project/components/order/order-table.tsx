@@ -34,7 +34,9 @@ export class OrderTableComponent extends React.Component<StateToProps & RouteCom
             <div>
                 <div className="table-container">
                     <ProductListForm />
-                    <OrderListForm matchProp={match} orderList={this.props.orderList} />
+                    <OrderListForm matchProp={match} 
+                    // orderList={this.props.orderList} 
+                    />
                 </div>
             </div>
         )

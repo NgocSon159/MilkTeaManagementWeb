@@ -56,3 +56,12 @@ export const SetPageListFood = (pageFood: any) => createAction({
     type: actionType.SET_PAGE_LIST_FOOD,
     pageFood
 });
+ 
+export const PostOrder = () => createAction({
+    type: actionType.POST_ORDER,
+});
+
+export const UpdateOrder = (order: any) => createAction({
+    type: actionType.UPDATE_ORDER,
+    order
+});

@@ -8,5 +8,6 @@ import { from } from 'rxjs';
 export const FoodEpic = (action$: any, state$: any) => action$.pipe(
     ofType(ActionType.GET_FOOD_LIST),
     mergeMap(() => from(ApiCall('post', 'food/search', state$.value.globalState.pageFood)).pipe(
-        map((res: any) => SetFoodToStoreAction(res.data.result)))
+        map((res: any) => SetFoodToStoreAction(res.data.result)
+        ))
     ));

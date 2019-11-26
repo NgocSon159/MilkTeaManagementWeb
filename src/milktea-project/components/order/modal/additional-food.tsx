@@ -46,58 +46,49 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
     ];
 
     state = {
-        info: {
-            size: "",
-            note: "",
-            icePercent: "100%",
-            sugarPercent: "100%"
-        },
+        size: "",
+        note: "",
+        icePercent: "100%",
+        sugarPercent: "100%",
         autocompleteList: [],
         autocompleteValue: '',
         counter: 1
     };
 
     handleOnChange = (e: any) => {
-        e.preventDefault();
-        const { info } = this.state;
+        // e.preventDefault();
         const { name, value } = e.target;
         this.setState({
-            info: {
-                ...info,
-                [name]: value
-            },
+            [name]: value
         });
     }
 
     resetForm = () => {
         this.setState({
-            info: {
-                size: "",
-                note: "",
-                icePercent: "100%",
-                sugarPercent: "100%"
-            },
+            size: "",
+            note: "",
+            icePercent: "100%",
+            sugarPercent: "100%",
             counter: 1
         });
     }
     onAddOrder = () => {
-        debugger;
-        const { info, counter } = this.state;
+        const { size, icePercent, sugarPercent, counter, note } = this.state;
         let { orderList = [], foodInfo = [] } = this.props;
-        const { size = "M", note, icePercent, sugarPercent } = info;
-        const food = foodInfo.find( (item: any) => item.size.substring(0, 1) === size);
+        let sizeDefault = size || foodInfo[0] && foodInfo[0].size.substring(0, 1); 
+        const food = foodInfo.find((item: any) => item.size.substring(0, 1) === sizeDefault);
         console.log('food', food);
         const data = {
-            foodId: "FO004",
-            name: "Cookie Ice Blended",
-            size: size,
-            price: 59000,
+            foodId: food.foodId,
+            name: food.name,
+            size: sizeDefault,
+            price: food.price,
             quantity: counter,
-            sum: 59000,
+            sum: Number(food.price)*Number(counter),
             icePercent,
             sugarPercent,
             note,
-            statusFood: "Finished"
+            statusFood: "Ordered"
         }
         orderList.push(data);
         this.props.closeModal();
@@ -151,14 +142,17 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
     }
 
     public render(): React.ReactNode {
-        const { size, note, icePercent, sugarPercent } = this.state.info;
+        console.log("render");
+        console.log("render state", this.state);
+        const { size, note, icePercent, sugarPercent } = this.state;
         const { foodInfo = [] } = this.props;
         const renderSize: any = [];
         if (foodInfo) {
+            let sizeDefault = size || foodInfo[0] && foodInfo[0].size.substring(0, 1);
             foodInfo.map((item: any, index: any) => {
                 let value = item.size.substring(0, 1);
-                const element = <><input name="size" type="radio" value={value}  checked={size === value}  onChange={this.handleOnChange}/> 
-                <label>{value}</label>
+                const element = <><input name="size" type="radio" value={value} checked={sizeDefault === value} onChange={this.handleOnChange} />
+                    <label>{value}</label>
                 </>;
                 renderSize.push(element);
             })
@@ -169,23 +163,9 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
         // ---------------------
         return (
             <div className="modal-dialog" role="document">
-                {/* <div className="modal-content"> */}
-                {/* <div className="modal-header">
-                        <h5 className="modal-title">Modal title</h5>
-                        <button type="button" onClick={this.closeModal} className="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div> */}
                 <div className="modal-body">
-                    {/* <div style={{ width: "100%" }}> */}
                     <div className="col-md-4 col-sm-4">
-                        {/* <div className="product-img"> */}
-                        {/* ---------------- */}
-
                         <img src={foodInfo[0] && foodInfo[0].image} className="img-item" />
-                        {/* -------------------- */}
-
-                        {/* </div> */}
                         <span>{foodInfo[0] && foodInfo[0].name}</span>
                     </div>
                     <div className="col-md-8 col-sm-8">
@@ -231,21 +211,21 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
                         <div className="group-item">
                             <span>Sugar percent:</span>
                             <div className="sugar-percent-info">
-                                <input name="sugarPercent" type="radio" value="25%" checked={sugarPercent === "25%"} onChange={this.handleOnChange} style={{ marginLeft: "22px" }} />
+                                <input name="sugarPercent" type="radio" value="25%" checked={sugarPercent === "25%"} onChange={(e) => this.handleOnChange(e)} style={{ marginLeft: "22px" }} />
                                 <label>25%</label>
-                                <input name="sugarPercent" type="radio" value="50%" checked={sugarPercent === "50%"} onChange={this.handleOnChange} />
+                                <input name="sugarPercent" type="radio" value="50%" checked={sugarPercent === "50%"} onChange={(e) => this.handleOnChange(e)} />
                                 <label>50%</label> <br />
                                 <input name="sugarPercent" type="radio" value="75%" style={{ marginLeft: "120px" }} checked={sugarPercent === "75%"}
-                                    onChange={this.handleOnChange} />
+                                    onChange={(e) => this.handleOnChange(e)} />
                                 <label>75%</label>
-                                <input name="sugarPercent" type="radio" value="100%" checked={sugarPercent === "100%"} onChange={this.handleOnChange} />
+                                <input name="sugarPercent" type="radio" value="100%" checked={sugarPercent === "100%"} onChange={(e) => this.handleOnChange(e)} />
                                 <label>100%</label>
                             </div>
                         </div>
                         <div className="group-item">
                             <span>Ice percent:</span>
                             <div className="ice-percent-info">
-                                <input name="icePercent" type="radio" value="25%" checked={icePercent === "25%"} onChange={this.handleOnChange} style={{ marginLeft: "22px" }}/>
+                                <input name="icePercent" type="radio" value="25%" checked={icePercent === "25%"} onChange={this.handleOnChange} style={{ marginLeft: "22px" }} />
                                 <label>25%</label>
                                 <input name="icePercent" type="radio" value="50%" checked={icePercent === "50%"} onChange={this.handleOnChange} />
                                 <label>50%</label><br />

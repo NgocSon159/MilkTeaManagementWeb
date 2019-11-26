@@ -89,23 +89,6 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
                             <img src={item.image} />
                         </div>
                         <div className="product-footer">
-                {/* //             <p>Chè BlackBall</p>
-                             <span data-toggle="modal"
-                //                 data-target={openModal}
-                //                 onClick={this.openModal}
-                //             // data-target="#modelId"
-                //             >
-                //                 <i className="fa fa-plus-circle" />
-                //             </span>
-                //         </div>
-                //     </div>
-                // </div>
-                // <Modal show={openModal} handleClose={this.hideModal}>
-                //     <AdditionalForm closeModal={this.hideModal}/>
-                // </Modal>
-                {/* <div className="modal fade" id="modelId" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                    <AdditionalForm />
-                </div> */}
                             <p>{item.name}</p>
                             <span onClick={() => this.openModal(item)}><i className="fa fa-plus-circle" /></span>
                         </div>

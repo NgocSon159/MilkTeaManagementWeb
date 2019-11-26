@@ -1,23 +1,39 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { orderSelector } from '../../redux/selector/OrderSelector';
-import { UpdateOrderList } from '../../redux/action/actions';
+import { UpdateOrderList, PostOrder, UpdateOrder } from '../../redux/action/actions';
+import { Order } from '../../model/Order';
 
 interface IProps {
     matchProp?: any;
     // orderList: any;
 }
 interface StateToProps {
-    matchProp?: any;
+    // matchProp?: any;
     orderList?: any;
+    loginInfo?: any;
 }
 interface DispatchToProps {
     onRemoveFood?: (orderList: any) => void;
+    postOrder?: () => void;
+    updateOrderToState?: (data: any) => void;
 }
-export class OrderListComponent extends React.Component<IProps & StateToProps & DispatchToProps> {
+export class OrderListComponent extends React.Component<IProps & StateToProps & DispatchToProps, any> {
     constructor(props: any) {
         super(props);
     }
+    
+    handleOnChange = (e: any) => {
+        const {name, value} = e.target;
+        console.log(name, value);
+        this.setState({
+            [name]: value
+        });
+    }
+state = {
+    totalPrice : 0
+}
+
 
     onRemoveFood = (foodId: string) => {
         let {orderList, onRemoveFood} = this.props;
@@ -33,16 +49,45 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         
     }
 
+    handleOrder = () => {
+        const { orderList,matchProp = {params: { tableId: "" }}, loginInfo = {} } = this.props;
+        const {userName = ""} = loginInfo;
+        const {totalPrice = 0} = this.state;
+        const data: Order = {
+            branchId: "BR001",
+            createdBy: userName,
+            servedOn: "",
+            servedBy: "",
+            completedOn: "",
+            completedBy: "",
+            tableId: matchProp.params.tableId,
+            timeDone: 0,
+            phoneNumber: "",
+            discount: 0,
+            total: totalPrice,
+            cash: 0,
+            change: 0,
+            foods: orderList
+        }
+        // @ts-ignore
+        this.props.updateOrderToState(data);
+        // @ts-ignore
+        this.props.postOrder();
+    }
     public render(): React.ReactNode {
-        console.log('props', this.props.orderList);
-        const { matchProp = { params: { tableId: "" } } } = this.props;
+        console.log('state', this.state);
+        const { matchProp = { params: { tableId: "" } }, loginInfo = {} } = this.props;
         const {orderList} = this.props;
+        const { userName = "" } = loginInfo;
+        let totalPrice = 0;
         const foods = orderList && orderList.map((food: any, idx: any) => {
+            totalPrice = totalPrice + food.sum;
             return <tr key={idx}>
                 <td scope="row">{food.name}</td>
                 <td>{food.size}</td>
+                <td>{food.quantity}</td>
+                <td>{food.sum}</td>
                 <td>{food.sugarPercent} - {food.icePercent}</td>
-                <td>{food.price}</td>
                 <td>
                     <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" /></span>
                     <span onClick={() => this.onEditFood(food.foodId)}><i className="fa fa-pencil-square" /></span>
@@ -67,8 +112,9 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                                 <tr>
                                     <th>Product Name</th>
                                     <th>Size</th>
-                                    <th>Note</th>
+                                    <th>Amount</th>
                                     <th>Price</th>
+                                    <th>Note</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -79,18 +125,18 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                         <div className="sub-panel-footer">
                             <div className="input-group">
                                 <label>Staff's name:</label><br />
-                                <input placeholder="..." />
+                                <input readOnly placeholder={userName}  />
                             </div>
                             <div className="input-group">
-                                <label>Total:</label><br />
-                                <input readOnly value="0 vnd" placeholder="" />
+                                <label>Total:</label>
+                                <input readOnly name="totalPrice" value={totalPrice} onChange={this.handleOnChange}/>
                             </div>
                         </div>
                     </div>
                     <div className="panel-footer">
                         <div className="input-group">
                             <button className="btn btn-secondary" type="button" aria-label="">Cancel</button>
-                            <button className="btn btn-secondary" type="button" aria-label="">Order</button>
+                            <button className="btn btn-secondary" type="button" onClick={this.handleOrder}>Order</button>
                         </div>
                     </div>
                 </div>
@@ -101,15 +147,18 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
 
 export function mapStateToProps(state: any): StateToProps {
     return {
-        orderList: orderSelector.selectOrderList(state)
+        orderList: orderSelector.selectOrderList(state),
+        loginInfo: state.globalState.loginInfo,
     }
 };
 
 export function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
-        onRemoveFood: (orderList) => dispatch(UpdateOrderList(orderList))
+        onRemoveFood: (orderList) => dispatch(UpdateOrderList(orderList)),
+        postOrder: () => dispatch(PostOrder()),
+        updateOrderToState: (data) => dispatch(UpdateOrder(data)),
     }
 };
 
 
-export const OrderListForm = connect(mapStateToProps, null)(OrderListComponent);
+export const OrderListForm = connect(mapStateToProps, mapDispatchToProps)(OrderListComponent);

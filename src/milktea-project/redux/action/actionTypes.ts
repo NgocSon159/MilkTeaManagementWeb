@@ -9,4 +9,6 @@ export const SET_FORM_INFO = "SET_FORM_INFO";
 export const GET_FOOD_LIST = "GET_FOOD_LIST";
 export const SET_FOOD_LIST = "SET_FOOD_LIST";
 export const SET_PAGE_LIST_FOOD = "SET_PAGE_LIST_FOOD";
+export const POST_ORDER = "POST_ORDER";
+export const UPDATE_ORDER = "UPDATE_ORDER";
 
