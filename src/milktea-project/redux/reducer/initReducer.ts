@@ -13,6 +13,8 @@ export function initReducer(state: any = {}, action: ActionData) {
             return { loginInfo: action.loginInfo };
         case actionType.SET_FOOD_LIST:
             return { food: action.food };
+        case actionType.SET_PAGE_LIST_FOOD:
+            return { pageFood: action.pageFood };
         default: return state;
     }
 }

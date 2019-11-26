@@ -8,7 +8,7 @@ function createAction<T>(d: T): T {
 
 export const InitData = (orderList: any) => createAction({
     type: actionType.INIT_DATA,
-    orderList 
+    orderList
 });
 
 export const AddTableListAction = (tables: Table[]) => createAction({
@@ -51,4 +51,8 @@ export const GetFoodListAction = () => createAction({
 export const SetFoodToStoreAction = (food: any) => createAction({
     type: actionType.SET_FOOD_LIST,
     food
+});
+export const SetPageListFood = (pageFood: any) => createAction({
+    type: actionType.SET_PAGE_LIST_FOOD,
+    pageFood
 });

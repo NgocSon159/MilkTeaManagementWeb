@@ -8,4 +8,5 @@ export interface ActionData{
     loginInfo?: any;
     food?: any;
     orderList?: any;
+    pageFood? :any; // data for Page Food
 }
