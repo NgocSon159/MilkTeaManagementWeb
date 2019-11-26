@@ -49,8 +49,8 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
         info: {
             size: "",
             note: "",
-            icePercent: "",
-            sugarPercent: ""
+            icePercent: "100%",
+            sugarPercent: "100%"
         },
         autocompleteList: [],
         autocompleteValue: '',
@@ -68,14 +68,25 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
             },
         });
     }
-    componentDidMount(): void {
-        console.log("props", this.props);
-    }
 
+    resetForm = () => {
+        this.setState({
+            info: {
+                size: "",
+                note: "",
+                icePercent: "100%",
+                sugarPercent: "100%"
+            },
+            counter: 1
+        });
+    }
     onAddOrder = () => {
-        const {info, counter} = this.state;
-        let {orderList = []} = this.props;
-        const { size, note, icePercent, sugarPercent } = info;
+        debugger;
+        const { info, counter } = this.state;
+        let { orderList = [], foodInfo = [] } = this.props;
+        const { size = "M", note, icePercent, sugarPercent } = info;
+        const food = foodInfo.find( (item: any) => item.size.substring(0, 1) === size);
+        console.log('food', food);
         const data = {
             foodId: "FO004",
             name: "Cookie Ice Blended",
@@ -83,7 +94,7 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
             price: 59000,
             quantity: counter,
             sum: 59000,
-            icePercent, 
+            icePercent,
             sugarPercent,
             note,
             statusFood: "Finished"
@@ -91,6 +102,11 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
         orderList.push(data);
         this.props.closeModal();
         this.props.addFoodOnOrder(orderList);
+        this.resetForm();
+    }
+    onCancelOrder = () => {
+        this.props.closeModal();
+        this.resetForm();
     }
     // ----autoComplete------
     handleChangeAuto = (e: any) => {
@@ -135,12 +151,15 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
     }
 
     public render(): React.ReactNode {
-        const {foodInfo = []} = this.props;
+        const { size, note, icePercent, sugarPercent } = this.state.info;
+        const { foodInfo = [] } = this.props;
         const renderSize: any = [];
-        if(foodInfo) {
+        if (foodInfo) {
             foodInfo.map((item: any, index: any) => {
-                console.log('item-modal', item);
-                const element = <><input name="size-input" type="radio" value="S"/> <label>{item.size.substring(0, 1)}</label></>;
+                let value = item.size.substring(0, 1);
+                const element = <><input name="size" type="radio" value={value}  checked={size === value}  onChange={this.handleOnChange}/> 
+                <label>{value}</label>
+                </>;
                 renderSize.push(element);
             })
         }
@@ -148,34 +167,32 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
             return <li key={idx} onClick={() => this.getAddValue(item)}>{item['name']}</li>
         });
         // ---------------------
-        const { size, note, icePercent, sugarPercent } = this.state.info;
-        console.log('orderList-modal', this.props.orderList);
         return (
             <div className="modal-dialog" role="document">
                 {/* <div className="modal-content"> */}
-                    {/* <div className="modal-header">
+                {/* <div className="modal-header">
                         <h5 className="modal-title">Modal title</h5>
                         <button type="button" onClick={this.closeModal} className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div> */}
-                    <div className="modal-body">
-                        {/* <div style={{ width: "100%" }}> */}
-                        <div className="col-md-4 col-sm-4">
-                            {/* <div className="product-img"> */}
-                            {/* ---------------- */}
+                <div className="modal-body">
+                    {/* <div style={{ width: "100%" }}> */}
+                    <div className="col-md-4 col-sm-4">
+                        {/* <div className="product-img"> */}
+                        {/* ---------------- */}
 
-                            <img src={foodInfo[0] && foodInfo[0].image} className="img-item" />
-                            {/* -------------------- */}
+                        <img src={foodInfo[0] && foodInfo[0].image} className="img-item" />
+                        {/* -------------------- */}
 
-                            {/* </div> */}
-                            <span>{foodInfo[0] && foodInfo[0].name}</span>
-                        </div>
-                        <div className="col-md-8 col-sm-8">
-                            <div className="group-item">
-                                <span>Size:</span>
-                                <div className="size-info">
-                                     {/* <input name="size" type="radio" value="S"
+                        {/* </div> */}
+                        <span>{foodInfo[0] && foodInfo[0].name}</span>
+                    </div>
+                    <div className="col-md-8 col-sm-8">
+                        <div className="group-item">
+                            <span>Size:</span>
+                            <div className="size-info">
+                                {/* <input name="size" type="radio" value="S"
                                          checked={size === "S"} 
                                          onChange={this.handleOnChange} /> <label>S</label>
                                      <input name="size" type="radio" value="M" 
@@ -184,16 +201,16 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
                                      <input name="size" type="radio" value="L" 
                                          checked={size === "L"} 
                                          onChange={this.handleOnChange} /> <label>L</label> */}
-                                    {
-                                        renderSize
-                                    }
-                                    
-                                </div>
+                                {
+                                    renderSize
+                                }
+
                             </div>
-                            {/* <div className="group-item">
+                        </div>
+                        {/* <div className="group-item">
                                 <span>Additional:</span>
                                 {/* ----------autocomplete-------- */}
-                            {/* <div className="autocomplete-input">
+                        {/* <div className="autocomplete-input">
                                     <input name="autocompleteValue" value={this.state.autocompleteValue} onChange={this.handleChangeAuto} />
                                     {this.state.autocompleteValue && <span className="clear-input" onClick={this.reset}><i /></span>}
                                     <div className="autoList-float">
@@ -201,59 +218,64 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
                                     </div>
                                 </div>
                             </div>  */}
-                            <div className="group-item">
-                                <span>Amount:</span>
-                                <div className="counter">
-                                    <span onClick={this.decrease}><i />-</span>
-                                    <span><input readOnly value={this.state.counter}
-                                        name="quantity"
-                                        onChange={this.handleOnChange} /></span>
-                                    <span onClick={this.increase}>+<i /></span>
-                                </div>
-                            </div>
-                            <div className="group-item">
-                                <span>Sugar percent:</span>
-                                <div className="sugar-percent-info">
-                                    <input name="sugarPercent" type="radio" value="25" 
-                                        checked={sugarPercent === "25"} 
-                                        onChange={this.handleOnChange} /> <label>25%</label>
-                                    <input name="sugarPercent" type="radio" value="50"  
-                                        checked={sugarPercent === "50"} 
-                                        onChange={this.handleOnChange} /> <label>50%</label>
-                                    <input name="sugarPercent" type="radio" value="75"  
-                                        checked={sugarPercent === "75"} 
-                                        onChange={this.handleOnChange} /> <label>75%</label>
-                                    <input name="sugarPercent" type="radio" value="100" 
-                                        checked={sugarPercent === "100"}  
-                                        onChange={this.handleOnChange} /> <label>100%</label>
-                                </div>
-                            </div>
-                            <div className="group-item">
-                                <span>Ice percent:</span>
-                                <div className="ice-percent-info">
-                                    <input name="icePercent" type="radio" value="25" checked={icePercent === "25"} onChange={this.handleOnChange} /> <label>25%</label>
-                                    <input name="icePercent" type="radio" value="50" checked={icePercent === "50"}  onChange={this.handleOnChange} /> <label>50%</label>
-                                    <input name="icePercent" type="radio" value="75" checked={icePercent === "75"}  onChange={this.handleOnChange} /> <label>75%</label>
-                                    <input name="icePercent" type="radio" value="100" checked={icePercent === "100"}  onChange={this.handleOnChange} /> <label>100%</label>
-                                </div>
-                            </div>
-                            <div className="group-item">
-                                <span className="note-info">Note:</span>
-                                <textarea name="note" value={note} onChange={this.handleOnChange} placeholder="enter some note..."></textarea>
-                            </div>
-                            <div className="group-item">
-                                <span className="price-info">Price:</span>
-                                <label className="price-input">{foodInfo[0] && foodInfo[0].price.toLocaleString()} vnd</label>
+                        <div className="group-item">
+                            <span>Amount:</span>
+                            <div className="counter">
+                                <span onClick={this.decrease}><i />-</span>
+                                <span><input readOnly value={this.state.counter}
+                                    name="quantity"
+                                    onChange={this.handleOnChange} /></span>
+                                <span onClick={this.increase}>+<i /></span>
                             </div>
                         </div>
+                        <div className="group-item">
+                            <span>Sugar percent:</span>
+                            <div className="sugar-percent-info">
+                                <input name="sugarPercent" type="radio" value="25%" checked={sugarPercent === "25%"} onChange={this.handleOnChange} style={{ marginLeft: "22px" }} />
+                                <label>25%</label>
+                                <input name="sugarPercent" type="radio" value="50%" checked={sugarPercent === "50%"} onChange={this.handleOnChange} />
+                                <label>50%</label> <br />
+                                <input name="sugarPercent" type="radio" value="75%" style={{ marginLeft: "120px" }} checked={sugarPercent === "75%"}
+                                    onChange={this.handleOnChange} />
+                                <label>75%</label>
+                                <input name="sugarPercent" type="radio" value="100%" checked={sugarPercent === "100%"} onChange={this.handleOnChange} />
+                                <label>100%</label>
+                            </div>
+                        </div>
+                        <div className="group-item">
+                            <span>Ice percent:</span>
+                            <div className="ice-percent-info">
+                                <input name="icePercent" type="radio" value="25%" checked={icePercent === "25%"} onChange={this.handleOnChange} style={{ marginLeft: "22px" }}/>
+                                <label>25%</label>
+                                <input name="icePercent" type="radio" value="50%" checked={icePercent === "50%"} onChange={this.handleOnChange} />
+                                <label>50%</label><br />
+                                <input name="icePercent" type="radio" value="75%" checked={icePercent === "75%"} onChange={this.handleOnChange} style={{ marginLeft: "120px" }} />
+                                <label>75%</label>
+                                <input name="icePercent" type="radio" value="100%" checked={icePercent === "100%"} onChange={this.handleOnChange} />
+                                <label>100%</label>
+                            </div>
+                        </div>
+                        <div className="group-item">
+                            <span className="note-info">Note:</span>
+                            <textarea name="note" value={note} onChange={this.handleOnChange} placeholder="enter some note..."></textarea>
+                        </div>
+                        <div className="group-item">
+                            <span className="price-info">Price:</span>
+                            <label className="price-input">{foodInfo[0] && foodInfo[0].price.toLocaleString()} vnd</label>
+                        </div>
                     </div>
-                    <div className="modal-footer">
-                        {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
-                        <button type="button" className="btn btn-primary"
-                            onClick={this.onAddOrder}>
-                            Add
-                        </button>
-                    </div>
+                </div>
+                <div className="modal-footer">
+                    {/* <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button> */}
+                    <button type="button" className="btn btn-warning"
+                        onClick={this.onCancelOrder}>
+                        Cancel
+                    </button>
+                    <button type="button" className="btn btn-primary"
+                        onClick={this.onAddOrder}>
+                        Add
+                    </button>
+                </div>
                 {/* </div> */}
             </div>
         )

@@ -4,7 +4,7 @@ import { OrderHomeForm } from './milktea-project/components/order/order-home';
 import { OrderTableForm } from './milktea-project/components/order/order-table';
 import { LoginForm } from './common/components/login';
 import { CashierComponent } from './milktea-project/components/cashier/cashier-component';
-import {KitchenHomeComponent} from "./milktea-project/components/kitchen/KitchenHome";
+import { KitchenHomeComponent } from "./milktea-project/components/kitchen/KitchenHome";
 
 export const MilkTeaRoutes: React.FunctionComponent = (props: any) => (
     <Switch>
@@ -14,6 +14,5 @@ export const MilkTeaRoutes: React.FunctionComponent = (props: any) => (
         <Route exact path="/cashier" component={CashierComponent} />
         <Route exact path="/kitchen" component={KitchenHomeComponent} />
         <Redirect from="/" to="/login" />
-        </Switch>
-
+    </Switch>
 );

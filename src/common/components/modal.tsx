@@ -5,7 +5,7 @@ export const Modal = ({ handleClose, show, children }: any) => {
   
     return (
       <div className={showHideClassName}>
-        <section className="modal-main">
+        <section className="modal-main" style={{maxWidth: "fit-content"}}>
           <div>modal title<span style={{float: "right"}} onClick={handleClose}>X</span></div>
           {children}
           {/* <button onClick={handleClose}>close</button> */}

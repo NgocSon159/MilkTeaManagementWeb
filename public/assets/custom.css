@@ -146,7 +146,7 @@ div.modal-body {
 div.group-item > span {
     float: left;
     text-align: left;
-    min-width: 53px;
+    min-width: 90px;
 }
 
 div.group-item > span.username,

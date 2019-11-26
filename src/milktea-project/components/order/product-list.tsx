@@ -5,7 +5,7 @@ import { Food } from '../../model/Food';
 import { compose } from 'redux';
 import { AdditionalForm } from './modal/additional-food';
 import { Modal } from '../../../common/components/modal';
-import {GetFoodListAction} from "../../redux/action/actions";
+import { GetFoodListAction } from "../../redux/action/actions";
 
 interface StateToProps {
     food?: Food[];
@@ -51,44 +51,26 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
         //     <div className="col-md-7 col-sm-7 text-center">
         //         <div className="panel product-list">
         const { food } = this.props;
-        const {openModal, foodItem} = this.state;
-        const resultAll: JSX.Element[] = [];
+        const { openModal, foodItem } = this.state;
+        const resultAll: any = [];
         const foodItemArr: string[] = [];
-        if(food) {
+        if (food) {
             food.map((item, idx) => {
                 let elementFood;
-                // @ts-ignore
-                elementFood =  <>
-                    <div className="product-item">
+                elementFood = <>
+                    <div className="product-item" key={idx}>
                         <div className="product-img">
-                            <img src={item.image}  />
+                            <img src={item.image} />
                         </div>
                         <div className="product-footer">
-                {/* //             <p>Chè BlackBall</p> 
-                             <span data-toggle="modal"
-                //                 data-target={openModal}
-                //                 onClick={this.openModal}
-                //             // data-target="#modelId"
-                //             >
-                //                 <i className="fa fa-plus-circle" />
-                //             </span>
-                //         </div>
-                //     </div>
-                // </div>
-                // <Modal show={openModal} handleClose={this.hideModal}>
-                //     <AdditionalForm closeModal={this.hideModal}/>
-                // </Modal>
-                {/* <div className="modal fade" id="modelId" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                    <AdditionalForm />
-                </div> */}
                             <p>{item.name}</p>
-                            <span onClick={() => this.openModal(item)}><i className="fa fa-plus-circle"/></span>
+                            <span onClick={() => this.openModal(item)}><i className="fa fa-plus-circle" /></span>
                         </div>
                     </div>
                 </>;
 
                 // @ts-ignore
-                if(foodItemArr.indexOf(item.name) < 0) {
+                if (foodItemArr.indexOf(item.name) < 0) {
                     // @ts-ignore
                     foodItemArr.push(item.name);
                     resultAll.push(elementFood);
@@ -102,9 +84,9 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
                         resultAll
                     }
                 </div>
-            
-              <Modal show={openModal} handleClose={this.hideModal}>
-                    <AdditionalForm foodInfo={foodItem} closeModal={this.hideModal}/>
+
+                <Modal show={openModal} handleClose={this.hideModal}>
+                    <AdditionalForm foodInfo={foodItem} closeModal={this.hideModal} />
                 </Modal>
             </div>
         )

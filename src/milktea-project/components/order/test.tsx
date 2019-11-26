@@ -13,7 +13,6 @@ export class TestComponent extends React.Component<StateToProps> {
     public render(): React.ReactNode {
         const { tables } = this.props;
         // const list = store.getState();
-        console.log('props', this.props);
         const result = tables && tables.map((table, idx) => {
             // return <button key={idx} type="button" className="order-btn-image" >
             //     Table {table.tableId}
