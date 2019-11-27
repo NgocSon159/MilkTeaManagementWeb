@@ -257,3 +257,10 @@ div.login-form > h3{
     background-color: #95381E;
     color: white;
 }
+
+div.inner > h3#paymentTable{
+    text-align: left;
+}  
+div.inner > p:hover{
+    cursor: pointer;
+}

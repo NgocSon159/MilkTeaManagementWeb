@@ -4,17 +4,32 @@ import * as actionType from '../action/actionTypes';
 export function initReducer(state: any = {}, action: ActionData) {
     switch (action.type) {
         case actionType.UPDATE_STATE:
-            return { tables: action.tables };
+            return {
+                ...state,
+                tables: action.tables
+            };
         // case actionType.UPDATE_ORDER_LIST:
         //     return { orderlist: [...state.globalState.orderlist, action.order] };
         case actionType.SET_FORM_INFO:
-            return { formInfo: action.formInfo };
+            return {
+                // ...state,
+                formInfo: action.formInfo
+            };
         case actionType.SET_LOGIN_INFO:
-            return { loginInfo: action.loginInfo };
+            return {
+                ...state,
+                loginInfo: action.loginInfo
+            };
         case actionType.SET_FOOD_LIST:
-            return { food: action.food };
+            return {
+                ...state,
+                food: action.food
+            };
         case actionType.SET_PAGE_LIST_FOOD:
-            return { pageFood: action.pageFood };
+            return {
+                ...state,
+                pageFood: action.pageFood
+            };
         default: return state;
     }
 }

@@ -65,3 +65,26 @@ export const UpdateOrder = (order: any) => createAction({
     type: actionType.UPDATE_ORDER,
     order
 });
+
+export const CancelAction = () => createAction({
+    type: actionType.CANCEL,
+});
+
+export const GetOrderFromTable = (tableId: number) => createAction({
+    type: actionType.GET_ORDER_FROM_TABLE,
+    tableId
+});
+
+export const GetPaymentTable = () => createAction({
+    type: actionType.GET_TABLE_PAYMENT,
+});
+
+export const UpdatePaymentTable = (paymentTables: any) => createAction({
+    type: actionType.UPDATE_PAYMENT_TABLE,
+    paymentTables
+});
+
+export const GetPaymentOrder = (tableId: number) => createAction({
+    type: actionType.GET_PAYMENT_ORDER,
+    tableId
+});

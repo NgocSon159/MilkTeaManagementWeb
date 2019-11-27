@@ -11,6 +11,7 @@ interface StateToProps {
     orderList?: any;
     // foodInfo: any;
     // closeModal: any;
+    order?: any; 
 }
 interface DispatchToProps {
     addFoodOnOrder: (data: any) => void;
@@ -56,7 +57,6 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
     };
 
     handleOnChange = (e: any) => {
-        // e.preventDefault();
         const { name, value } = e.target;
         this.setState({
             [name]: value
@@ -72,12 +72,12 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
             counter: 1
         });
     }
-    onAddOrder = () => {
+    onAddOrder = (e: any) => {
+        e.preventDefault();
         const { size, icePercent, sugarPercent, counter, note } = this.state;
         let { orderList = [], foodInfo = [] } = this.props;
         let sizeDefault = size || foodInfo[0] && foodInfo[0].size.substring(0, 1); 
         const food = foodInfo.find((item: any) => item.size.substring(0, 1) === sizeDefault);
-        console.log('food', food);
         const data = {
             foodId: food.foodId,
             name: food.name,
@@ -142,8 +142,6 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
     }
 
     public render(): React.ReactNode {
-        console.log("render");
-        console.log("render state", this.state);
         const { size, note, icePercent, sugarPercent } = this.state;
         const { foodInfo = [] } = this.props;
         const renderSize: any = [];
@@ -267,6 +265,7 @@ export function mapStateToProps(state: any): StateToProps {
         orderList: orderSelector.selectOrderList(state),
         // foodInfo: state
         // closeModal: state
+        order: state.orderState.order
     }
 };
 

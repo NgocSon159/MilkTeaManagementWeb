@@ -29,7 +29,6 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
 
     componentDidMount() {
         this.props.getTableList();
-        // this.props.initData([]);
     }
 
     public render(): React.ReactNode {

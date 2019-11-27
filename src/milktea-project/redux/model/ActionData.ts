@@ -1,3 +1,5 @@
+import { any } from "prop-types";
+
 export interface ActionData{
     type: string;
     tables?: any;
@@ -9,4 +11,6 @@ export interface ActionData{
     food?: any;
     orderList?: any;
     pageFood? :any; // data for Page Food
+
+    paymentTables?: any;
 }

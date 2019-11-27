@@ -1,58 +1,58 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { orderSelector } from '../../redux/selector/OrderSelector';
-import { UpdateOrderList, PostOrder, UpdateOrder } from '../../redux/action/actions';
+import { UpdateOrderList, PostOrder, UpdateOrder, GetOrderFromTable } from '../../redux/action/actions';
 import { Order } from '../../model/Order';
 
 interface IProps {
     matchProp?: any;
+    history?: any;
     // orderList: any;
 }
 interface StateToProps {
     // matchProp?: any;
     orderList?: any;
     loginInfo?: any;
+    order?: any;
 }
 interface DispatchToProps {
     onRemoveFood?: (orderList: any) => void;
     postOrder?: () => void;
     updateOrderToState?: (data: any) => void;
+    getOrderFromTable?: (tableId: number) => void;
+    // updateOrderList?: (orderList: any) => void;
 }
 export class OrderListComponent extends React.Component<IProps & StateToProps & DispatchToProps, any> {
     constructor(props: any) {
         super(props);
     }
-    
-    handleOnChange = (e: any) => {
-        const {name, value} = e.target;
-        console.log(name, value);
-        this.setState({
-            [name]: value
-        });
+
+    componentDidMount() {
+        const { matchProp = { params: { tableId: "" } } } = this.props;
+        // @ts-ignore
+        this.props.getOrderFromTable(Number(matchProp.params.tableId));
     }
-state = {
-    totalPrice : 0
-}
-
-
     onRemoveFood = (foodId: string) => {
-        let {orderList, onRemoveFood} = this.props;
+        let { orderList, onRemoveFood } = this.props;
         const food = orderList.find((food: any) => food.foodId === foodId);
         const index = orderList.indexOf();
         orderList.splice(index, 1);
-        console.log('food',food);
         // const data = [];
         // onRemoveFood(data);
     }
 
     onEditFood = (foodId: string) => {
-        
+
     }
 
-    handleOrder = () => {
-        const { orderList,matchProp = {params: { tableId: "" }}, loginInfo = {} } = this.props;
-        const {userName = ""} = loginInfo;
-        const {totalPrice = 0} = this.state;
+    handleOrder = (e: any) => {
+        e.preventDefault();
+        const { orderList, matchProp = { params: { tableId: "" } }, loginInfo = {}, history } = this.props;
+        const { userName = "" } = loginInfo;
+        let totalPrice = 0;
+        orderList && orderList.map((food: any, idx: any) => {
+            totalPrice = totalPrice + food.sum;
+        });
         const data: Order = {
             branchId: "BR001",
             createdBy: userName,
@@ -60,7 +60,7 @@ state = {
             servedBy: "",
             completedOn: "",
             completedBy: "",
-            tableId: matchProp.params.tableId,
+            tableId: Number(matchProp.params.tableId),
             timeDone: 0,
             phoneNumber: "",
             discount: 0,
@@ -73,16 +73,37 @@ state = {
         this.props.updateOrderToState(data);
         // @ts-ignore
         this.props.postOrder();
+        setTimeout(function () {
+            history.push('/order');
+        }, 1500);
+        // this.props.history.push('/order');
     }
     public render(): React.ReactNode {
-        console.log('state', this.state);
-        const { matchProp = { params: { tableId: "" } }, loginInfo = {} } = this.props;
-        const {orderList} = this.props;
+        const { matchProp = { params: { tableId: "" } }, loginInfo = {}, order } = this.props;
+        const { orderList } = this.props;
+        console.log('order', this.props.order);
+        console.log('porp', this.props);
+        console.log('orderList', orderList);
         const { userName = "" } = loginInfo;
+        // const listFood = order.foods || orderList;
         let totalPrice = 0;
-        const foods = orderList && orderList.map((food: any, idx: any) => {
+        const orderFoods = order && order.foods && order.foods.map((food: any, idx: any) => {
             totalPrice = totalPrice + food.sum;
             return <tr key={idx}>
+                <td scope="row">{food.name}</td>
+                <td>{food.size}</td>
+                <td>{food.quantity}</td>
+                <td>{food.sum}</td>
+                <td>{food.sugarPercent} - {food.icePercent}</td>
+                <td>
+                    <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" /></span>
+                    <span onClick={() => this.onEditFood(food.foodId)}><i className="fa fa-pencil-square" /></span>
+                </td>
+            </tr>
+        });
+        const orderListFoods = orderList && orderList.map((food: any, idx: any) => {
+            totalPrice = totalPrice + food.sum;
+            return <tr key={food.foodId}>
                 <td scope="row">{food.name}</td>
                 <td>{food.size}</td>
                 <td>{food.quantity}</td>
@@ -119,17 +140,18 @@ state = {
                                 </tr>
                             </thead>
                             <tbody>
-                                {foods}
+                                {orderFoods}
+                                {orderListFoods}
                             </tbody>
                         </table>
                         <div className="sub-panel-footer">
                             <div className="input-group">
                                 <label>Staff's name:</label><br />
-                                <input readOnly placeholder={userName}  />
+                                <input readOnly value={userName} />
                             </div>
                             <div className="input-group">
                                 <label>Total:</label>
-                                <input readOnly name="totalPrice" value={totalPrice} onChange={this.handleOnChange}/>
+                                <input readOnly name="totalPrice" value={totalPrice} />
                             </div>
                         </div>
                     </div>
@@ -146,9 +168,11 @@ state = {
 }
 
 export function mapStateToProps(state: any): StateToProps {
+    console.log("map state", state);
     return {
         orderList: orderSelector.selectOrderList(state),
         loginInfo: state.globalState.loginInfo,
+        order: state.orderState.order
     }
 };
 
@@ -157,6 +181,7 @@ export function mapDispatchToProps(dispatch: any): DispatchToProps {
         onRemoveFood: (orderList) => dispatch(UpdateOrderList(orderList)),
         postOrder: () => dispatch(PostOrder()),
         updateOrderToState: (data) => dispatch(UpdateOrder(data)),
+        getOrderFromTable: (tableId) => dispatch(GetOrderFromTable(tableId))
     }
 };
 
