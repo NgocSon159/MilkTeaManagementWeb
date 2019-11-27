@@ -11,6 +11,9 @@ export function orderReducer(state: any = {}, action: ActionData) {
         orderList: [...action.orderList]
       }
     case actionType.UPDATE_ORDER:
+      return { order: action.order }
+    case actionType.SET_ORDER_KITCHEN:
+      return {orderKitchen: action.orderKitchen}
       return {
         order: { ...action.order }
       }

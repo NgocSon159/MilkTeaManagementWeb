@@ -56,7 +56,7 @@ export const SetPageListFood = (pageFood: any) => createAction({
     type: actionType.SET_PAGE_LIST_FOOD,
     pageFood
 });
- 
+
 export const PostOrder = () => createAction({
     type: actionType.POST_ORDER,
 });
@@ -65,6 +65,22 @@ export const UpdateOrder = (order: any) => createAction({
     type: actionType.UPDATE_ORDER,
     order
 });
+
+export const GetOrderKitchen = () => createAction({
+    type: actionType.GET_ORDER_KITCHEN,
+});
+
+export const SetOrderKitchen = (orderKitchen: any) => createAction({
+    type: actionType.SET_ORDER_KITCHEN,
+    orderKitchen
+});
+
+export const ProcessOrder = (orderProcess: any, userName: any) => createAction({
+    type: actionType.PROCESS_ORDER,
+    orderProcess,
+    userName
+});
+
 
 export const CancelAction = () => createAction({
     type: actionType.CANCEL,
