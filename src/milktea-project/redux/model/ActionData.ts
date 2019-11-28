@@ -13,4 +13,5 @@ export interface ActionData{
 
     paymentTables?: any;
     paymentOrder?: any;
+    customerInfo?: any;
 }

@@ -111,8 +111,22 @@ export const GetPaymentOrder = (tableId: number) => createAction({
     type: actionType.GET_PAYMENT_ORDER,
     tableId
 });
+export const PostPaymentOrder = (postOrder: any) => createAction({
+    type: actionType.POST_PAYMENT_ORDER,
+    postOrder
+});
 
 export const UpdatePaymentOrder = (paymentOrder: any) => createAction({
     type: actionType.UPDATE_PAYMENT_ORDER,
     paymentOrder
+});
+
+export const GetMemberShip = (customerId: any) => createAction({
+    type: actionType.GET_MEMBER_SHIP,
+    customerId
+});
+
+export const UpdateMemberShipToState = (customerInfo: any) => createAction({
+    type: actionType.UPDATE_MEMBER_SHIP_STATE,
+    customerInfo
 });

@@ -1,4 +1,4 @@
-import { OrderEpic, PaymentOrderEpic } from './../../milktea-project/redux/epics/orderEpics';
+import { OrderEpic, PaymentOrderEpic, MemberEpic, postPaymentOrderEpic } from './../../milktea-project/redux/epics/orderEpics';
 import { combineReducers } from 'redux';
 import { initReducer } from '../../milktea-project/redux/reducer/initReducer';
 import { orderReducer } from '../../milktea-project/redux/reducer/orderReducer';
@@ -14,4 +14,15 @@ import { FoodEpic } from '../../milktea-project/redux/epics/foodEpics';
 
 export const RootReducer = combineReducers({globalState: initReducer, orderState: orderReducer});
 
-export const RootEpic: any = combineEpics(FinishFoodEpic, ProcessOrderEpic ,OrderKitchenEpic ,PaymentOrderEpic,TableEpic, LoginEpic, FoodEpic, OrderEpic, OrderFromTableEpic, PaymentTableEpic);
+export const RootEpic: any = combineEpics(
+    postPaymentOrderEpic, 
+    MemberEpic, 
+    FinishFoodEpic, 
+    ProcessOrderEpic ,
+    OrderKitchenEpic ,
+    PaymentOrderEpic,TableEpic, 
+    LoginEpic, 
+    FoodEpic, 
+    OrderEpic, 
+    OrderFromTableEpic, 
+    PaymentTableEpic);

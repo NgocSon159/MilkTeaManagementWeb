@@ -113,7 +113,7 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
                 <button onClick={(e) => this.back(e)} className="btn btn-secondary" type="button" aria-label="" disabled={(pageFood.pageIndex === 1) ? true : false}>Back</button>
                 <button className="btn btn-secondary" type="button" aria-label="">{pageFood.pageIndex}</button>
                 <button onClick={(e) => this.forward(e)} className="btn btn-secondary" type="button" aria-label="">Forward</button>
-              <Modal show={openModal} handleClose={this.hideModal}>
+              <Modal show={openModal} handleClose={this.hideModal} title="FOOD FUNDAY">
                     <AdditionalForm foodInfo={foodItem} closeModal={this.hideModal}/>
                 </Modal>
             </div>
