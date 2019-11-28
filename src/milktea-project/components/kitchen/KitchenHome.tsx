@@ -22,13 +22,15 @@ interface IProps {
 export class KitchenHome extends React.Component <IProps & StateToProps & DispatchToProps> {
     constructor(props: any) {
         super(props);
+        console.log('KitchenHome');
+        if (props.loginInfo) {
+            this.subcribe(props.loginInfo);
+        }
         const thisClone = this;
-        socket.on('connect', function(){
-            console.log("ok");
-        });
         socket.on('plsUpdateKitchen', function(){
             console.log("plsUpdateKitchen recieved");
             thisClone.forceRefresh();
+            // socket.off('plsUpdateKitchen')
         });
     }
 
@@ -43,7 +45,6 @@ export class KitchenHome extends React.Component <IProps & StateToProps & Dispat
     forceRefresh = () => {
         console.log("rf");
         this.props.getOrderKitchen();
-        socket.emit('baristaUpdate');
         // this.setState({count: this.state.count + 1})
     }
 
@@ -55,9 +56,9 @@ export class KitchenHome extends React.Component <IProps & StateToProps & Dispat
         console.log('render kitchen', this.props);
 
         const {orderKitchen, loginInfo} = this.props;
-        if (loginInfo) {
-            this.subcribe(loginInfo);
-        }
+        // if (loginInfo) {
+        //     this.subcribe(loginInfo);
+        // }
         const bgcl = {
             backgroundColor: '#FFFFFF'
         };

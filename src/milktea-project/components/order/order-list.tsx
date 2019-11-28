@@ -38,6 +38,10 @@ interface DispatchToProps {
 export class OrderListComponent extends React.Component<IProps & StateToProps & DispatchToProps, any> {
     constructor(props: any) {
         super(props);
+        if (props.loginInfo) {
+            this.subcribe(props.loginInfo);
+        }
+        console.log('OrderListComponent');
         this.state = {
             openModal: false,
             food: {},
@@ -113,9 +117,11 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         this.props.updateOrderToState(data);
         // @ts-ignore
         this.props.postOrder();
+
         setTimeout(function () {
-            history.push('/order');
             socket.emit("baristaUpdate");
+            history.push('/order');
+
         }, 1000);
         // this.props.history.push('/order');
     }
@@ -125,8 +131,8 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         // @ts-ignore
         this.props.paymentTable(Number(tableId));
         setTimeout(function () {
+            socket.emit("cashierUpdate");
             history.push('/order');
-            // socket.emit("baristaUpdate");
         }, 1000);
     }
 
@@ -135,9 +141,9 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         const { orderList } = this.props;
         const { openModal, food, amount, isOpen } = this.state;
         console.log('amount', amount);
-        if (loginInfo) {
-            this.subcribe(loginInfo);
-        }
+        // if (loginInfo) {
+        //     this.subcribe(loginInfo);
+        // }
         const { userName = "" } = loginInfo;
         // const listFood = order.foods || orderList;
         let totalPrice = 0;
@@ -216,10 +222,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                     </div>
                     <div className="panel-footer">
                         <div className="input-group">
-                            <button className="btn btn-secondary" type="button" aria-label="">Cancel</button>
+                            <button className="btn btn-secondary" type="button" disabled={true}>Cancel</button>
                             <button className="btn btn-secondary" type="button" onClick={this.handleOrder}>Order</button>
                             {
-                                order && <button className="btn btn-secondary" type="button" onClick={() => this.paymentTable(matchProp.params.tableId)}>Payment</button> || ""
+                                order && order.statusOrder === 'Served' && <button className="btn btn-secondary" type="button" onClick={() => this.paymentTable(matchProp.params.tableId)}>Payment</button> || "" || ""
                             }
 
                         </div>

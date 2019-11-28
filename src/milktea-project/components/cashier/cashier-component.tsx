@@ -1,6 +1,4 @@
 import * as React from 'react';
-
-
 import { BillForm, Bill } from "../cashier/Form/Bill";
 import { connect } from 'react-redux';
 import { GetPaymentTable, GetPaymentOrder, PostPaymentOrder, GetMemberShip } from '../../redux/action/actions';
@@ -27,14 +25,21 @@ interface DispatchToProps {
 export class CashierComponent extends React.Component<StateToProps & DispatchToProps, any> {
     constructor(props: any) {
         super(props);
+        console.log('CashierComponent');
+        if(props.loginInfo) {
+            this.subcribe(props.loginInfo);
+        }
         this.state = ({
             openModal: false,
             customerId: "",
             cash: 0,
         });
-        socket.on('connect', function(){
-            console.log("ok");
+        const thisClone = this;
+        socket.on('plsUpdateCashier', function(){
+            console.log("plsUpdateCashier recieved");
+            thisClone.props.getPaymentTable();
         });
+
         this.openModal = this.openModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
     }
@@ -99,13 +104,21 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
                 change
             }
 
-            const thisClone = this
+            const thisClone = this;
             postPaymentOrder(order);
+            socket.emit('waiterUpdate');
             setTimeout(function () {
+
                 thisClone.alertStatus();
             }, 1000);
         }
-
+    this.resetForm();
+    }
+    resetForm = () => {
+        this.setState({
+            customerId: "",
+            cash: 0,
+        });
     }
     alertStatus = () => {
         const { paymentOrder } = this.props;
@@ -131,9 +144,9 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
     }
     public render(): React.ReactNode {
         const { paymentTables, paymentOrder, loginInfo = {}, customerInfo = { rank: {} } } = this.props;
-        if(loginInfo) {
-            this.subcribe(loginInfo);
-        }
+        // if(loginInfo) {
+        //     this.subcribe(loginInfo);
+        // }
         const { customerId, cash, openModal } = this.state;
         const { userName = "" } = loginInfo;
         const discount = (customerInfo && customerInfo.rank && customerInfo.rank.discount) ? customerInfo.rank.discount : 0;

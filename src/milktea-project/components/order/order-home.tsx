@@ -6,12 +6,16 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { GetTableListAction, InitData } from '../../redux/action/actions';
 import { NavLink } from 'react-router-dom';
+import socketIo from "socket.io-client";
+import {socketUrl} from "../../../common/config";
+const socket = socketIo(socketUrl);
 
 interface IState {
     tableList?: Table[];
 }
 interface StateToProps {
     tables?: Table[];
+    loginInfo?: any;
 }
 interface DispatchToProps {
     getTableList: () => void;
@@ -25,15 +29,31 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
         this.state = {
             tableList: []
         };
+        console.log('OrderHomeComponent');
+        if(props.loginInfo) {
+            this.subcribe(props.loginInfo);
+        }
+        const thisClone = this;
+        socket.on('plsUpdateWaiter', function(){
+            console.log("plsUpdateWaiter recieved");
+            thisClone.props.getTableList();
+        });
     }
 
     componentDidMount() {
         this.props.getTableList();
     }
 
-    public render(): React.ReactNode {
-        const { tables } = this.props;
+    subcribe = (loginInfo: any) => {
+        socket.emit('sendUserName', loginInfo)
+    }
 
+    public render(): React.ReactNode {
+        const { tables, loginInfo } = this.props;
+        // if(loginInfo) {
+        //     this.subcribe(loginInfo);
+        // }
+        console.log('order home', this.props);
         const result = tables && tables.map((table, idx) => {
             const footerClass = table.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
             const iconClass = table.statusTable === 'Empty' ? 'fa  fa-smile-o' : 'fa  fa-frown-o';
@@ -68,6 +88,7 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
 export function mapStateToProps(state: ReduxState): StateToProps {
     return {
         tables: tableSelector.selectAllTable(state),
+        loginInfo: state.globalState.loginInfo
     }
 };
 
