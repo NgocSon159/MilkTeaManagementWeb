@@ -10,8 +10,9 @@ import {
 } from '../../redux/action/actions';
 import { Order } from '../../model/Order';
 import socketIo from "socket.io-client";
+import {socketUrl} from "../../../common/config";
 
-const socket = socketIo('http://localhost:3500');
+const socket = socketIo(socketUrl);
 
 interface IProps {
     matchProp?: any;

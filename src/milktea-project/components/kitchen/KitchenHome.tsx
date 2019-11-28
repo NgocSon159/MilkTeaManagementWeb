@@ -3,8 +3,9 @@ import {connect} from 'react-redux';
 import {GetOrderKitchen} from "../../redux/action/actions";
 import {OrderTableRow, OrderTableRowComponent} from "./OrderTableRow";
 import socketIo from 'socket.io-client';
+import {socketUrl} from "../../../common/config";
 
-const socket = socketIo('http://localhost:3500');
+const socket = socketIo(socketUrl);
 
 interface StateToProps {
     orderKitchen?: any

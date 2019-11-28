@@ -6,6 +6,10 @@ import { connect } from 'react-redux';
 import { GetPaymentTable, GetPaymentOrder, PostPaymentOrder, GetMemberShip } from '../../redux/action/actions';
 import { OrderStatusEnum } from '../../enum/OrderStatusEnum';
 import { Modal } from '../../../common/components/modal';
+import socketIo from "socket.io-client";
+import {socketUrl} from "../../../common/config";
+
+const socket = socketIo(socketUrl);
 
 interface StateToProps {
     paymentTables?: any;
@@ -28,12 +32,20 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
             customerId: "",
             cash: 0,
         });
+        socket.on('connect', function(){
+            console.log("ok");
+        });
         this.openModal = this.openModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
     }
     componentDidMount() {
         this.props.getPaymentTable();
     }
+
+    subcribe = (loginInfo: any) => {
+        socket.emit('sendUserName', loginInfo)
+    }
+
     hideModal() {
         this.setState({
             openModal: false
@@ -119,6 +131,9 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
     }
     public render(): React.ReactNode {
         const { paymentTables, paymentOrder, loginInfo = {}, customerInfo = { rank: {} } } = this.props;
+        if(loginInfo) {
+            this.subcribe(loginInfo);
+        }
         const { customerId, cash, openModal } = this.state;
         const { userName = "" } = loginInfo;
         const discount = (customerInfo && customerInfo.rank && customerInfo.rank.discount) ? customerInfo.rank.discount : 0;
