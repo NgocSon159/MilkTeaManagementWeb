@@ -19,7 +19,7 @@ export class HearderComponent extends React.Component<StateToProps> {
                         <NavLink to="/cashier">Cashier</NavLink>
                     </li>
                     <li className="">
-                        <NavLink to="/barista">Barista</NavLink>
+                        <NavLink to="/kitchen">Barista</NavLink>
                     </li>
                     <li className="">
                         <NavLink to="/order">Order</NavLink>
@@ -33,7 +33,7 @@ export class HearderComponent extends React.Component<StateToProps> {
                 break;
             case "RBarista":
                 return <li className="">
-                    <NavLink to="/barista">Barista</NavLink>
+                    <NavLink to="/kitchen">Barista</NavLink>
                 </li>
                 break;
             case "RWaiter":
@@ -46,6 +46,8 @@ export class HearderComponent extends React.Component<StateToProps> {
         }
     }
     public render(): React.ReactNode {
+        const {loginInfo} = this.props;
+        console.log('loginInfo', loginInfo);
         return (
             <div id="site-header">
                 <header id="header" className="header-block-top">

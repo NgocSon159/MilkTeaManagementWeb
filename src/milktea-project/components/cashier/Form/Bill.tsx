@@ -22,7 +22,7 @@ export class Bill extends React.Component<IProps & StateToProps> {
                 <td scope="row">{food.name}</td>
                 <td>{food.size}</td>
                 <td>{food.price}</td>
-                <td>{`${food.discount || 0 } %`}</td>
+                <td>{`${food.discount || 0} %`}</td>
                 <td>{food.quantity}</td>
                 <td>{food.sum}</td>
             </tr>
@@ -31,13 +31,7 @@ export class Bill extends React.Component<IProps & StateToProps> {
         return (
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
-                    {/* <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                        <span onClick={this.props.closeModal}>&times;</span>
-                    </button> */}
                     <div className="modal-header">
-                        {/* <div>
-                            <h5 className="modal-title text-center" >FOOD FUNDAY</h5>
-                        </div> */}
                         <div>
                             <h6> {paymentOrder && paymentOrder.completedOn}</h6>
                         </div>

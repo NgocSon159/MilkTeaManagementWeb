@@ -10,7 +10,9 @@ import {
 } from '../../redux/action/actions';
 import { Order } from '../../model/Order';
 import socketIo from "socket.io-client";
-import {socketUrl} from "../../../common/config";
+import { socketUrl } from "../../../common/config";
+import { Modal } from '../../../common/components/modal';
+import { EditFoodForm } from './modal/editFood';
 
 const socket = socketIo(socketUrl);
 
@@ -26,7 +28,7 @@ interface StateToProps {
     order?: any;
 }
 interface DispatchToProps {
-    updateOrderList?: (orderList: any) => void;
+    updateOrderList: (orderList: any) => void;
     postOrder?: () => void;
     updateOrderToState?: (data: any) => void;
     getOrderFromTable?: (tableId: number) => void;
@@ -36,6 +38,12 @@ interface DispatchToProps {
 export class OrderListComponent extends React.Component<IProps & StateToProps & DispatchToProps, any> {
     constructor(props: any) {
         super(props);
+        this.state = {
+            openModal: false,
+            food: {},
+            amount: 0,
+            isOpen: false
+        }
     }
 
     componentDidMount() {
@@ -43,19 +51,36 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         // @ts-ignore
         this.props.getOrderFromTable(Number(matchProp.params.tableId));
     }
+    handleOnChange = (e: any)  => {
+        const {name, value} = e.target;
+        this.setState({
+            [name ]: value
+        });
+    }
     onRemoveFood = (foodId: string) => {
         let { orderList, updateOrderList } = this.props;
         const food = orderList.find((food: any) => food.foodId === foodId);
-        const index = orderList.indexOf();
+        const index = orderList.findIndex((oderFood: any) => oderFood.foodId === food.foodId);
+        // console.log('index', index);
         orderList.splice(index, 1);
         // const data = [];
-        // onRemoveFood(data);
+
+        updateOrderList(orderList);
     }
 
-    onEditFood = (foodId: string) => {
-
+    onEditFood = (food: any) => {
+        this.setState({
+            openModal: true,
+            food,
+            isOpen: true
+        });
     }
 
+    hideModal = () => {
+        this.setState({
+            openModal: false
+        });
+    }
     subcribe = (loginInfo: any) => {
         socket.emit('sendUserName', loginInfo)
     }
@@ -96,7 +121,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
     }
 
     paymentTable = (tableId: any) => {
-        const {history } = this.props;
+        const { history } = this.props;
         // @ts-ignore
         this.props.paymentTable(Number(tableId));
         setTimeout(function () {
@@ -108,12 +133,11 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
     public render(): React.ReactNode {
         const { matchProp = { params: { tableId: "" } }, loginInfo = {}, order } = this.props;
         const { orderList } = this.props;
+        const { openModal, food, amount, isOpen } = this.state;
+        console.log('amount', amount);
         if (loginInfo) {
             this.subcribe(loginInfo);
         }
-        console.log('order', this.props.order);
-        console.log('porp', this.props);
-        console.log('orderList', orderList);
         const { userName = "" } = loginInfo;
         // const listFood = order.foods || orderList;
         let totalPrice = 0;
@@ -135,16 +159,18 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         });
         const orderListFoods = orderList && orderList.map((food: any) => {
             totalPrice = totalPrice + food.sum;
+            let amountValue = amount ? amount : food.quantity;
             return <tr key={food.foodId}>
                 <td scope="row">{food.name}</td>
                 <td>{food.size}</td>
+                {/* <td><input name="amount" value={amountValue} style={{width: "50px"}} onChange={this.handleOnChange}/></td> */}
                 <td>{food.quantity}</td>
                 <td>{food.sum}</td>
                 <td>{food.sugarPercent} - {food.icePercent}</td>
                 <td>
                     <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" />
                     </span>
-                    <span onClick={() => this.onEditFood(food.foodId)}><i className="fa fa-pencil-square" /></span>
+                    <span onClick={() => this.onEditFood(food)}><i className="fa fa-pencil-square" /></span>
                 </td>
             </tr>
         });
@@ -199,6 +225,9 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                         </div>
                     </div>
                 </div>
+                <Modal show={openModal} handleClose={this.hideModal} title="UPDATE FOOD">
+                    {!isOpen ? "" : <EditFoodForm hideModal={this.hideModal} food={food}/>}
+                </Modal>
             </div>
         )
     };
