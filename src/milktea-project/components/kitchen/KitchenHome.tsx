@@ -24,8 +24,18 @@ export class KitchenHome extends React.Component <IProps & StateToProps & Dispat
         this.props.getOrderKitchen();
     }
 
+    state = {
+        count: 0
+    }
+
+    forceRefresh = () => {
+        console.log("rf");
+        this.props.getOrderKitchen();
+        // this.setState({count: this.state.count + 1})
+    }
+
     public render(): React.ReactNode {
-        console.log('props', this.props);
+        console.log('render kitchen', this.props);
         const {orderKitchen} = this.props;
         const bgcl = {
             backgroundColor: '#FFFFFF'
@@ -55,7 +65,7 @@ export class KitchenHome extends React.Component <IProps & StateToProps & Dispat
 
                     {
                         orderKitchen && orderKitchen.map((item: any, idx: any) =>
-                            <OrderTableRowComponent order = {item}/>
+                            <OrderTableRowComponent order = {item} forceRefresh={this.forceRefresh}/>
                         )
                     }
                     {/*<tr>*/}

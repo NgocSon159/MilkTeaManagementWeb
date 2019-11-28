@@ -27,8 +27,14 @@ export const OrderKitchenEpic = (action$: any) => action$.pipe(
 
 export const ProcessOrderEpic = (action$: any) => action$.pipe(
     ofType(ActionType.PROCESS_ORDER),
-    mergeMap(() => from(ApiCall('post', 'order/user/barista', null)).pipe(
-        map((res: any) => SetOrderKitchen(res.data)))
+    mergeMap((action$: any) => from(ApiCall('put', `order/user/barista/process/${action$.userName}`, action$.orderProcess)).pipe(
+        map((res: any) => CancelAction()))
+    ));
+
+export const FinishFoodEpic = (action$: any) => action$.pipe(
+    ofType(ActionType.FINISH_FOOD),
+    mergeMap((action$: any) => from(ApiCall('put', `order/user/barista/processFood/${action$.foodId}`, action$.order)).pipe(
+        map((res: any) => CancelAction()))
     ));
 
 export const OrderFromTableEpic = (action$: any) => action$.pipe(

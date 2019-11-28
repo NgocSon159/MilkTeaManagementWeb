@@ -6,12 +6,12 @@ interface StateToProps {
     // loginInfo?: any;
 }
 
-export class Bill extends React.Component<> {
+export class Bill extends React.Component {
     public render(): React.ReactNode {
         var widht200 = {
             width: '200px'
         }
-        const { paymentOrder, loginInfo } = this.props;
+        // const { paymentOrder, loginInfo } = this.props;
         return (
             <div className="modal-dialog" role="document">
                 <div className="modal-content">

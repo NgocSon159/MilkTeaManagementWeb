@@ -1,12 +1,12 @@
 import React from "react";
 import {OrderStatusEnum} from "../../enum/OrderStatusEnum";
 import {FoodStatusEnum} from "../../enum/FoodStatusEnum";
-import {GetOrderKitchen, ProcessOrder} from "../../redux/action/actions";
+import {FinishFood, GetOrderKitchen, ProcessOrder} from "../../redux/action/actions";
 import {connect} from "react-redux";
-import {KitchenHome} from "./KitchenHome";
 
 interface OrderProps {
     order?: any
+    forceRefresh?: any
 }
 
 interface StateToProps {
@@ -15,6 +15,7 @@ interface StateToProps {
 
 interface DispatchToProps {
     processOrder: (orderProcess: any, userName: any) => void;
+    finishFood: (order: any, foodId: any) => void;
 }
 
 export class OrderTableRow extends React.Component<StateToProps & DispatchToProps & OrderProps> {
@@ -26,18 +27,31 @@ export class OrderTableRow extends React.Component<StateToProps & DispatchToProp
     }
 
     expand = () => {
-        console.log("kjkhjk");
         this.setState({expanded: !this.state.expanded})
     }
 
     process = (order: any) => {
-        console.log("asdasd")
+        const props = this.props;
         this.props.processOrder(order, "barista");
+        setTimeout(function () {
+            props.forceRefresh();
+        }, 1000);
+        // this.props.forceRefresh();
+    }
+
+    finishFood = (order: any, foodId: any) => {
+        const props = this.props;
+        this.props.finishFood(order, foodId);
+        setTimeout(function () {
+            props.forceRefresh();
+        }, 1000);
+        // this.props.forceRefresh();
     }
 
 
 
     render() {
+        console.log("render row");
         const { order } = this.props;
         const {expanded} = this.state;
         return(
@@ -48,7 +62,7 @@ export class OrderTableRow extends React.Component<StateToProps & DispatchToProp
                     <th onClick={this.expand}>{order.statusOrder}</th>
                     <th>
                         {
-                            order.statusOrder === OrderStatusEnum.Ordered ? <button>Process</button> : ""
+                            order.statusOrder === OrderStatusEnum.Ordered ? <button onClick={() => this.process(order)}>Process</button> : ""
                         }
 
                     </th>
@@ -75,7 +89,7 @@ export class OrderTableRow extends React.Component<StateToProps & DispatchToProp
                                         <td style={{width: "40%"}}> {item.statusFood}</td>
                                         <td style={{width: "40%"}}>
                                             {
-                                                item.statusFood === FoodStatusEnum.Ordered ? "" : <button>Finish</button>
+                                                (item.statusFood === FoodStatusEnum.Ordered || item.statusFood === FoodStatusEnum.Finished) ? "" : <button onClick={() => this.finishFood(order, item.foodId)}>Finish</button>
                                             }
 
                                         </td>
@@ -102,6 +116,7 @@ export function mapStateToProps(state: any): StateToProps {
 export function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
         processOrder: (orderProcess, userName) => dispatch(ProcessOrder(orderProcess, userName)),
+        finishFood: (order, foodId) => dispatch(FinishFood(order, foodId))
     }
 };
 

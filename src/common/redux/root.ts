@@ -7,11 +7,11 @@ import {
     TableEpic,
     OrderFromTableEpic,
     PaymentTableEpic,
-    OrderKitchenEpic, ProcessOrderEpic
+    OrderKitchenEpic, ProcessOrderEpic, FinishFoodEpic
 } from '../../milktea-project/redux/epics/tableEpics';
 import { LoginEpic } from '../../milktea-project/redux/epics/loginEpics';
 import { FoodEpic } from '../../milktea-project/redux/epics/foodEpics';
 
 export const RootReducer = combineReducers({globalState: initReducer, orderState: orderReducer});
 
-export const RootEpic: any = combineEpics(ProcessOrderEpic ,OrderKitchenEpic ,PaymentOrderEpic,TableEpic, LoginEpic, FoodEpic, OrderEpic, OrderFromTableEpic, PaymentTableEpic);
+export const RootEpic: any = combineEpics(FinishFoodEpic, ProcessOrderEpic ,OrderKitchenEpic ,PaymentOrderEpic,TableEpic, LoginEpic, FoodEpic, OrderEpic, OrderFromTableEpic, PaymentTableEpic);

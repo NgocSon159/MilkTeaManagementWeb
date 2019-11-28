@@ -81,6 +81,13 @@ export const ProcessOrder = (orderProcess: any, userName: any) => createAction({
     userName
 });
 
+export const FinishFood = (order: any, foodId: any) => createAction({
+    type: actionType.FINISH_FOOD,
+    order,
+    foodId
+});
+
+
 
 export const CancelAction = () => createAction({
     type: actionType.CANCEL,
