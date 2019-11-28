@@ -47,6 +47,9 @@ button:focus {
     background-color: red !important;
 }
 
+.footer-table-payment {
+    background-color: lightpink !important;
+} 
 div.icon {
     top: -40px !important;
 }

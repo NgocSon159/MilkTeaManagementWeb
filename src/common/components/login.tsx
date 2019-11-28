@@ -71,7 +71,7 @@ export class LoginComponent extends React.Component<DispatchToProps & StateToPro
                         <div className="group-item">
                             <span className="password">Password:</span>
                             <div >
-                                <input name="password" type="text" onChange={this.handleOnchange} />
+                                <input name="password" type="password" onChange={this.handleOnchange} />
                             </div>
                         </div>
                         <div className="group-item">

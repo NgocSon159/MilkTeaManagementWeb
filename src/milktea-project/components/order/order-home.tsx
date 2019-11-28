@@ -55,7 +55,16 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
         // }
         console.log('order home', this.props);
         const result = tables && tables.map((table, idx) => {
-            const footerClass = table.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
+            let footerClass = "";
+            // const tmpClass = table.statusTable === 'Full' ? 'footer-table-full' : 'footer-table-payment';
+            // const footerClass = table.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
+            if(table.statusTable === 'Empty'){
+                footerClass = 'footer-table-empty';
+            }else if (table.statusTable === 'Full') {
+                footerClass = 'footer-table-full';
+            } else {
+                footerClass = 'footer-table-payment';
+            }
             const iconClass = table.statusTable === 'Empty' ? 'fa  fa-smile-o' : 'fa  fa-frown-o';
             return <div className="small-box custom-table" key={idx}>
                 <div className="inner">
@@ -65,9 +74,10 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
                     {/*        Need to {table.statusTable === 'Empty' ? 'order' : 'payment'}*/}
                     {/*    </NavLink> : ""*/}
                     {/*}*/}
-                    <NavLink to={`/order/${table.tableId}`} style={{ color: 'white' }}>
+                    {table.statusTable === "Payment" ? "Paymenting" :  <NavLink to={`/order/${table.tableId}`} style={{ color: 'white' }}>
                         Need to {table.statusTable === 'Empty' ? 'order' : 'payment'}
-                    </NavLink>
+                    </NavLink>}
+                   
                 </div>
                 <div className="icon">
                     <i className="fa fa-coffee"></i>
