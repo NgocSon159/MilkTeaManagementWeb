@@ -104,3 +104,8 @@ export const GetPaymentOrder = (tableId: number) => createAction({
     type: actionType.GET_PAYMENT_ORDER,
     tableId
 });
+
+export const UpdatePaymentOrder = (paymentOrder: any) => createAction({
+    type: actionType.UPDATE_PAYMENT_ORDER,
+    paymentOrder
+});

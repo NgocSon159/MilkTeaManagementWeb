@@ -16,7 +16,7 @@ interface StateToProps {
     order?: any;
 }
 interface DispatchToProps {
-    onRemoveFood?: (orderList: any) => void;
+    updateOrderList?: (orderList: any) => void;
     postOrder?: () => void;
     updateOrderToState?: (data: any) => void;
     getOrderFromTable?: (tableId: number) => void;
@@ -33,7 +33,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         this.props.getOrderFromTable(Number(matchProp.params.tableId));
     }
     onRemoveFood = (foodId: string) => {
-        let { orderList, onRemoveFood } = this.props;
+        let { orderList, updateOrderList } = this.props;
         const food = orderList.find((food: any) => food.foodId === foodId);
         const index = orderList.indexOf();
         orderList.splice(index, 1);
@@ -50,7 +50,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         const { orderList, matchProp = { params: { tableId: "" } }, loginInfo = {}, history } = this.props;
         const { userName = "" } = loginInfo;
         let totalPrice = 0;
-        orderList && orderList.map((food: any, idx: any) => {
+        orderList && orderList.map((food: any) => {
             totalPrice = totalPrice + food.sum;
         });
         const data: Order = {
@@ -96,12 +96,14 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                 <td>{food.sum}</td>
                 <td>{food.sugarPercent} - {food.icePercent}</td>
                 <td>
+                    {/* <button disabled={true}>
                     <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" /></span>
-                    <span onClick={() => this.onEditFood(food.foodId)}><i className="fa fa-pencil-square" /></span>
+                    </button>
+                    <span onClick={() => this.onEditFood(food.foodId)}><i className="fa fa-pencil-square" /></span> */}
                 </td>
             </tr>
         });
-        const orderListFoods = orderList && orderList.map((food: any, idx: any) => {
+        const orderListFoods = orderList && orderList.map((food: any) => {
             totalPrice = totalPrice + food.sum;
             return <tr key={food.foodId}>
                 <td scope="row">{food.name}</td>
@@ -110,7 +112,8 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                 <td>{food.sum}</td>
                 <td>{food.sugarPercent} - {food.icePercent}</td>
                 <td>
-                    <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" /></span>
+                    <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" />
+                    </span>
                     <span onClick={() => this.onEditFood(food.foodId)}><i className="fa fa-pencil-square" /></span>
                 </td>
             </tr>
@@ -178,7 +181,7 @@ export function mapStateToProps(state: any): StateToProps {
 
 export function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
-        onRemoveFood: (orderList) => dispatch(UpdateOrderList(orderList)),
+        updateOrderList: (orderList) => dispatch(UpdateOrderList(orderList)),
         postOrder: () => dispatch(PostOrder()),
         updateOrderToState: (data) => dispatch(UpdateOrder(data)),
         getOrderFromTable: (tableId) => dispatch(GetOrderFromTable(tableId))

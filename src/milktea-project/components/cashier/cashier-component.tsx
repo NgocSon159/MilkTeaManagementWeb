@@ -1,13 +1,15 @@
 import * as React from 'react';
 
 
-import { Bill } from "../cashier/Form/Bill";
+import { BillForm } from "../cashier/Form/Bill";
 import { connect } from 'react-redux';
 import { GetPaymentTable, GetPaymentOrder } from '../../redux/action/actions';
 import { NavLink } from 'react-router-dom';
 
 interface StateToProps {
-    paymentTables: any;
+    paymentTables?: any;
+    paymentOrder?: any;
+    loginInfo?: any;
 }
 
 interface DispatchToProps {
@@ -32,11 +34,11 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
     }
 
     handleDetailOrder = (tableId: number) => {
-        debugger;
         this.props.getPaymentOrder(tableId);
     }
     public render(): React.ReactNode {
-        const { paymentTables } = this.props;
+        const { paymentTables, paymentOrder, loginInfo = {} } = this.props;
+        const { userName = "" } = loginInfo;
         console.log('paymentTables', paymentTables)
         const tableList = paymentTables && paymentTables.map((paymentTable: any, idx: any) => {
             const footerClass = paymentTable.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
@@ -58,6 +60,18 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
                 </div>
             </div>
         });
+        let subTotal = 0;
+        const foodList = paymentOrder && paymentOrder.foods && paymentOrder.foods.map((food: any, idx: any) => {
+           subTotal = subTotal + food.sum;
+           return <tr key={idx}>
+                <td scope="row">{food.name}</td>
+                <td>{food.size}</td>
+                <td>{food.price}</td>
+                <td>{food.discount && food.discount && '%'}</td>
+                <td>{food.quantity}</td>
+                <td>{food.sum}</td>
+            </tr>
+        })
         return (
             <div>
                 <div className="col-md-7 col-sm-7 text-center">
@@ -67,15 +81,15 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
 
                 </div>
                 <div className="modal fade" id="modelId" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-                    <Bill />
+                    <BillForm />
                 </div>
                 <div className="col-md-5 col-sm-5 text-center">
                     <div className="panel">
                         <div className="panel-heading">
 
                             <div>
-                                <label>Table 1</label> &nbsp;
-                                <label>Order 01</label> &nbsp;
+                                <label>Table {paymentOrder && paymentOrder.tableId}</label> &nbsp;
+                                <label>Order {paymentOrder && paymentOrder.orderId}</label> &nbsp;
                                 <label>Customer's ID:</label> &nbsp;
                                 <input />
                             </div>
@@ -94,36 +108,13 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td scope="row">Trà đen</td>
-                                        <td>S</td>
-                                        <td>40.000 vnd</td>
-                                        <td>10%</td>
-                                        <td>1</td>
-                                        <td>36.000 vnd</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row">Cafe sữa</td>
-                                        <td></td>
-                                        <td>38.000 vnd</td>
-                                        <td>0%</td>
-                                        <td>2</td>
-                                        <td>76.000 vnd</td>
-                                    </tr>
-                                    <tr>
-                                        <td scope="row">Trà sữa trân châu</td>
-                                        <td>M</td>
-                                        <td>41.000 vnd</td>
-                                        <td>5%</td>
-                                        <td>2</td>
-                                        <td>78.000 vnd</td>
-                                    </tr>
+                                    {foodList}
                                 </tbody>
                             </table>
                             <div className="sub-panel-footer">
                                 <div className="input-group">
                                     <label>Subtotal:</label>
-                                    <input readOnly value="198.000 vnd" /><br />
+                                    <input readOnly value={subTotal} /><br />
                                     <label>Member:</label>
                                     <input readOnly value="10 %" /><br />
                                     <label>Total:</label>
@@ -135,12 +126,13 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
                                 </div>
                                 <div className="input-group">
                                     <label>Staff's Name:</label><br />
-                                    <input readOnly value="Nguyễn Văn A" placeholder="" /><br /><br /><br />
+                                    <input readOnly value={userName} placeholder="" /><br /><br /><br />
                                     <button className="btn btn-secondary"
                                         type="button"
                                         aria-label=""
                                         onClick={this.additionalModal}
-                                        data-toggle="modal" data-target="#modelId">Pay
+                                        data-toggle="modal" data-target="#modelId"
+                                        disabled={!paymentOrder ? true : false}>Pay
                                     </button>
                                 </div>
                             </div>
@@ -154,7 +146,9 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
 
 export function mapStateToProps(state: any): StateToProps {
     return {
-        paymentTables: state.orderState.paymentTables
+        paymentTables: state.orderState.paymentTables,
+        paymentOrder: state.orderState.paymentOrder,
+        loginInfo: state.globalState.loginInfo,
     }
 }
 

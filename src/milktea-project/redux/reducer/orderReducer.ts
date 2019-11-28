@@ -21,6 +21,11 @@ export function orderReducer(state: any = {}, action: ActionData) {
       return {
         paymentTables: action.paymentTables
       }
+      case actionType.UPDATE_PAYMENT_ORDER:
+      return {
+        ...state,
+        paymentOrder: action.paymentOrder
+      }
     default: return state;
   }
 }

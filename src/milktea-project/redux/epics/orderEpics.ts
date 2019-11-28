@@ -1,5 +1,5 @@
 import * as ActionType from '../action/actionTypes';
-import { CancelAction, UpdateOrder } from '../action/actions';
+import { CancelAction, UpdateOrder, UpdatePaymentOrder } from '../action/actions';
 import { ofType } from 'redux-observable';
 import { mergeMap, map } from 'rxjs/operators';
 import { ApiCall } from '../../../common/utils/callApi';
@@ -14,6 +14,6 @@ export const OrderEpic = (action$: any, state$: any) => action$.pipe(
 export const PaymentOrderEpic = (action$: any, state$: any) => action$.pipe(
     ofType(ActionType.GET_PAYMENT_ORDER),
     mergeMap((action$: any) => from(ApiCall('get', `table/getOrder/${action$.tableId}`, null)).pipe(
-        map((res: any) => UpdateOrder(res.data))
+        map((res: any) => UpdatePaymentOrder(res.data))
     )
     )); 

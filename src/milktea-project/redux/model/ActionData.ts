@@ -12,4 +12,5 @@ export interface ActionData{
     orderKitchen? : any;
 
     paymentTables?: any;
+    paymentOrder?: any;
 }
