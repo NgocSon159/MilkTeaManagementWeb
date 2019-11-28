@@ -74,7 +74,7 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
                     {/*        Need to {table.statusTable === 'Empty' ? 'order' : 'payment'}*/}
                     {/*    </NavLink> : ""*/}
                     {/*}*/}
-                    {table.statusTable === "Payment" ? "Paymenting" :  <NavLink to={`/order/${table.tableId}`} style={{ color: 'white' }}>
+                    {table.statusTable === "Payment" ? 'Paymenting' :  <NavLink to={`/order/${table.tableId}`} style={{ color: 'white' }}>
                         Need to {table.statusTable === 'Empty' ? 'order' : 'payment'}
                     </NavLink>}
                    

@@ -1,5 +1,6 @@
 .App {
     background-image: url('./images//banner.jpg');
+    min-height: 597px;
 }
 
 #header {
@@ -270,4 +271,8 @@ div.inner > h3#paymentTable{
 }
 div.inner > p:hover{
     cursor: pointer;
+}
+
+.inner {
+    color: white;
 }

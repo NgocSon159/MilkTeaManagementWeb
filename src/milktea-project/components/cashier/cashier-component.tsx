@@ -152,7 +152,15 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
         const discount = (customerInfo && customerInfo.rank && customerInfo.rank.discount) ? customerInfo.rank.discount : 0;
         console.log('paymentOrder', paymentOrder)
         const tableList = paymentTables && paymentTables.map((paymentTable: any, idx: any) => {
-            const footerClass = paymentTable.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
+            // const footerClass = paymentTable.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
+            let footerClass = "";
+            if(paymentTable.statusTable === 'Empty'){
+                footerClass = 'footer-table-empty';
+            }else if (paymentTable.statusTable === 'Full') {
+                footerClass = 'footer-table-full';
+            } else {
+                footerClass = 'footer-table-payment';
+            }
             const iconClass = paymentTable.statusTable === 'Empty' ? 'fa  fa-smile-o' : 'fa  fa-frown-o';
             return <div className="product-item">
                 <div className="small-box custom-table" key={idx}>
