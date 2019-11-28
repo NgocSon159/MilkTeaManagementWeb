@@ -1,8 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { orderSelector } from '../../redux/selector/OrderSelector';
-import { UpdateOrderList, PostOrder, UpdateOrder, GetOrderFromTable } from '../../redux/action/actions';
+import {
+    UpdateOrderList,
+    PostOrder,
+    UpdateOrder,
+    GetOrderFromTable,
+    RequestPaymentTable
+} from '../../redux/action/actions';
 import { Order } from '../../model/Order';
+import socketIo from "socket.io-client";
+
+const socket = socketIo('http://localhost:3500');
 
 interface IProps {
     matchProp?: any;
@@ -21,6 +30,7 @@ interface DispatchToProps {
     updateOrderToState?: (data: any) => void;
     getOrderFromTable?: (tableId: number) => void;
     // updateOrderList?: (orderList: any) => void;
+    paymentTable?: (tableId: number) => void;
 }
 export class OrderListComponent extends React.Component<IProps & StateToProps & DispatchToProps, any> {
     constructor(props: any) {
@@ -43,6 +53,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
 
     onEditFood = (foodId: string) => {
 
+    }
+
+    subcribe = (loginInfo: any) => {
+        socket.emit('sendUserName', loginInfo)
     }
 
     handleOrder = (e: any) => {
@@ -75,12 +89,27 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         this.props.postOrder();
         setTimeout(function () {
             history.push('/order');
-        }, 1500);
+            socket.emit("baristaUpdate");
+        }, 1000);
         // this.props.history.push('/order');
     }
+
+    paymentTable = (tableId: any) => {
+        const {history } = this.props;
+        // @ts-ignore
+        this.props.paymentTable(Number(tableId));
+        setTimeout(function () {
+            history.push('/order');
+            // socket.emit("baristaUpdate");
+        }, 1000);
+    }
+
     public render(): React.ReactNode {
         const { matchProp = { params: { tableId: "" } }, loginInfo = {}, order } = this.props;
         const { orderList } = this.props;
+        if (loginInfo) {
+            this.subcribe(loginInfo);
+        }
         console.log('order', this.props.order);
         console.log('porp', this.props);
         console.log('orderList', orderList);
@@ -162,6 +191,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                         <div className="input-group">
                             <button className="btn btn-secondary" type="button" aria-label="">Cancel</button>
                             <button className="btn btn-secondary" type="button" onClick={this.handleOrder}>Order</button>
+                            {
+                                order && <button className="btn btn-secondary" type="button" onClick={() => this.paymentTable(matchProp.params.tableId)}>Payment</button> || ""
+                            }
+
                         </div>
                     </div>
                 </div>
@@ -184,7 +217,8 @@ export function mapDispatchToProps(dispatch: any): DispatchToProps {
         updateOrderList: (orderList) => dispatch(UpdateOrderList(orderList)),
         postOrder: () => dispatch(PostOrder()),
         updateOrderToState: (data) => dispatch(UpdateOrder(data)),
-        getOrderFromTable: (tableId) => dispatch(GetOrderFromTable(tableId))
+        getOrderFromTable: (tableId) => dispatch(GetOrderFromTable(tableId)),
+        paymentTable: (tableId) => dispatch(RequestPaymentTable(tableId))
     }
 };
 

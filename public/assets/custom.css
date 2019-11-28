@@ -77,6 +77,10 @@ background-color: #E55A1E;
     margin-left: 20px;
 }
 
+.input-group > button:nth-child(3) {
+    margin-left: 20px;
+}
+
 .input-group > input {
     text-align: center;
         outline: 0;
@@ -260,7 +264,7 @@ div.login-form > h3{
 
 div.inner > h3#paymentTable{
     text-align: left;
-}  
+}
 div.inner > p:hover{
     cursor: pointer;
 }

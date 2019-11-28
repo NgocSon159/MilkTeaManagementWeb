@@ -64,6 +64,7 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
     handlePay = () => {
         const { paymentOrder, loginInfo = {}, customerInfo = { rank: {} }, postPaymentOrder, getPaymentOrder } = this.props;
         const { customerId, cash, tableId } = this.state;
+
         const { userName = "" } = loginInfo;
         const discount = (customerInfo && customerInfo.rank && customerInfo.rank.discount) ? customerInfo.rank.discount : 0;
         let subTotal = 0;
@@ -71,22 +72,28 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
             subTotal = subTotal + food.sum;
         });
         const total = subTotal - subTotal * discount / 100;
-        const change = (Number(cash) > 0) ? Number(cash) - total : 0;
-        const order = {
-            ...paymentOrder,
-            completedBy: userName,
-            phoneNumber: customerId,
-            discount,
-            total,
-            cash: Number(cash),
-            change
+        const numberCash = Number(cash);
+        if(numberCash < total) {
+            alert('Cash is not enough');
+        } else {
+            const change = (Number(cash) > 0) ? Number(cash) - total : 0;
+            const order = {
+                ...paymentOrder,
+                completedBy: userName,
+                phoneNumber: customerId,
+                discount,
+                total,
+                cash: Number(cash),
+                change
+            }
+
+            const thisClone = this
+            postPaymentOrder(order);
+            setTimeout(function () {
+                thisClone.alertStatus();
+            }, 1000);
         }
 
-        const thisClone = this
-        postPaymentOrder(order);
-        setTimeout(function () {
-            thisClone.alertStatus();
-        }, 1000);
     }
     alertStatus = () => {
         const { paymentOrder } = this.props;
@@ -95,7 +102,7 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
             // eslint-disable-next-line no-restricted-globals
             if (confirm('Do you want to print Bill?')) {
                 this.openModal();
-            } 
+            }
             else {
                 this.props.getPaymentTable();
             }

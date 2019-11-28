@@ -46,7 +46,7 @@ export class LoginComponent extends React.Component<DispatchToProps & StateToPro
                 history.push("/cashier");
                 break;
             case "RBarista":
-                history.push("/barista");
+                history.push("/kitchen");
                 break;
             case "RWaiter":
                 history.push("/order");

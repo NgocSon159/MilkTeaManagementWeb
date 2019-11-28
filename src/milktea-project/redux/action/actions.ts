@@ -130,3 +130,8 @@ export const UpdateMemberShipToState = (customerInfo: any) => createAction({
     type: actionType.UPDATE_MEMBER_SHIP_STATE,
     customerInfo
 });
+
+export const RequestPaymentTable = (tableId: any) => createAction({
+    type: actionType.REQUEST_PAYMENT_TABLE,
+    tableId
+});

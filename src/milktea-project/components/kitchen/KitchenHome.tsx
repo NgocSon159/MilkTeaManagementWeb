@@ -2,10 +2,13 @@ import * as React from 'react';
 import {connect} from 'react-redux';
 import {GetOrderKitchen} from "../../redux/action/actions";
 import {OrderTableRow, OrderTableRowComponent} from "./OrderTableRow";
+import socketIo from 'socket.io-client';
 
+const socket = socketIo('http://localhost:3500');
 
 interface StateToProps {
     orderKitchen?: any
+    loginInfo?: any
 }
 
 interface DispatchToProps {
@@ -18,6 +21,14 @@ interface IProps {
 export class KitchenHome extends React.Component <IProps & StateToProps & DispatchToProps> {
     constructor(props: any) {
         super(props);
+        const thisClone = this;
+        socket.on('connect', function(){
+            console.log("ok");
+        });
+        socket.on('plsUpdateKitchen', function(){
+            console.log("plsUpdateKitchen recieved");
+            thisClone.forceRefresh();
+        });
     }
 
     componentDidMount(): void {
@@ -31,12 +42,21 @@ export class KitchenHome extends React.Component <IProps & StateToProps & Dispat
     forceRefresh = () => {
         console.log("rf");
         this.props.getOrderKitchen();
+        socket.emit('baristaUpdate');
         // this.setState({count: this.state.count + 1})
+    }
+
+    subcribe = (loginInfo: any) => {
+        socket.emit('sendUserName', loginInfo)
     }
 
     public render(): React.ReactNode {
         console.log('render kitchen', this.props);
-        const {orderKitchen} = this.props;
+
+        const {orderKitchen, loginInfo} = this.props;
+        if (loginInfo) {
+            this.subcribe(loginInfo);
+        }
         const bgcl = {
             backgroundColor: '#FFFFFF'
         };
@@ -93,7 +113,8 @@ export class KitchenHome extends React.Component <IProps & StateToProps & Dispat
 
 export function mapStateToProps(state: any): StateToProps {
     return {
-        orderKitchen: state.orderState.orderKitchen
+        orderKitchen: state.orderState.orderKitchen,
+        loginInfo: state.globalState.loginInfo
     }
 };
 

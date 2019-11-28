@@ -63,14 +63,7 @@ export class Bill extends React.Component<IProps & StateToProps> {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td scope="row">Trà đen</td>
-                                        <td>S</td>
-                                        <td>40.000 vnd</td>
-                                        <td>10%</td>
-                                        <td>1</td>
-                                        <td>36.000 vnd</td>
-                                    </tr>
+                                    {foodList}
                                 </tbody>
                             </table>
                             <div className="sub-panel-footer">

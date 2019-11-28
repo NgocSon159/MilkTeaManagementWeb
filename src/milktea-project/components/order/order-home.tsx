@@ -33,13 +33,18 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
 
     public render(): React.ReactNode {
         const { tables } = this.props;
+
         const result = tables && tables.map((table, idx) => {
             const footerClass = table.statusTable === 'Empty' ? 'footer-table-empty' : 'footer-table-full';
             const iconClass = table.statusTable === 'Empty' ? 'fa  fa-smile-o' : 'fa  fa-frown-o';
             return <div className="small-box custom-table" key={idx}>
                 <div className="inner">
                     <h3>{table.tableId}</h3>
-
+                    {/*{*/}
+                    {/*    table.statusTable !== 'Payment' ? <NavLink to={`/order/${table.tableId}`} style={{ color: 'white' }}>*/}
+                    {/*        Need to {table.statusTable === 'Empty' ? 'order' : 'payment'}*/}
+                    {/*    </NavLink> : ""*/}
+                    {/*}*/}
                     <NavLink to={`/order/${table.tableId}`} style={{ color: 'white' }}>
                         Need to {table.statusTable === 'Empty' ? 'order' : 'payment'}
                     </NavLink>
@@ -47,7 +52,7 @@ export class OrderHomeComponent extends React.Component<OrderHomePropsType, ISta
                 <div className="icon">
                     <i className="fa fa-coffee"></i>
                 </div>
-                <div style={{ borderBottomRightRadius: "25px", borderBottomLeftRadius: "25px" }} className={`small-box-footer ${footerClass}`}>{table.statusTable === 'Empty' ? 'Empty' : 'Full'} <i className={iconClass}></i></div>
+                <div style={{ borderBottomRightRadius: "25px", borderBottomLeftRadius: "25px" }} className={`small-box-footer ${footerClass}`}>{table.statusTable === 'Empty' ? 'Empty' : table.statusTable === 'Full' ? 'Full': 'Payment'} <i className={iconClass}></i></div>
             </div>
         });
         return (

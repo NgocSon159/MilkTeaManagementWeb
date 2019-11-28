@@ -48,3 +48,9 @@ export const PaymentTableEpic = (action$: any) => action$.pipe(
     mergeMap(() => from(ApiCall('get', 'table/payment', null)).pipe(
         map((res: any) => UpdatePaymentTable(res.data)))
     ));
+
+export const RequestPaymentTableEpic = (action$: any) => action$.pipe(
+    ofType(ActionType.REQUEST_PAYMENT_TABLE),
+    mergeMap((action$: any) => from(ApiCall('get', `table/updatePayment/${action$.tableId}`, null)).pipe(
+        map((res: any) => CancelAction()))
+    ));
