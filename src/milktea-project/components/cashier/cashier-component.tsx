@@ -205,14 +205,15 @@ export class CashierComponent extends React.Component<StateToProps & DispatchToP
                     <BillForm subTotal={subTotal} closeModal={this.hideModal} />
                 </Modal>
                 <div className="col-md-5 col-sm-5 text-center">
-                    <div className="panel">
-                        <div className="panel-heading">
+                    <div className="panel" style={{minWidth: "fit-content"}}>
+                        <div className="panel-heading" style={{color: "white"}}>
 
                             <div>
                                 <label>Table {paymentOrder && paymentOrder.tableId}</label> &nbsp;
                                 <label>Order {paymentOrder && paymentOrder.orderId}</label> &nbsp;
                                 <label>Customer's ID:</label> &nbsp;
                                 <input name="customerId" id="customerId" value={customerId}
+                                    style={{color: "black"}}
                                     onChange={this.handleOnChange}
                                     onKeyDown={this.getMemberShip}
                                     disabled={!paymentOrder ? true : false} />

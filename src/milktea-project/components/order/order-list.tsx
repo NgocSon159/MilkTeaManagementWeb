@@ -195,6 +195,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         this.hideModal();
         this.resetForm(food);
     }
+
+    back = () => {
+        this.props.history.push("/order")
+    }
     public render(): React.ReactNode {
         const { matchProp = { params: { tableId: "" } }, loginInfo = {}, order } = this.props;
         const { orderList } = this.props;
@@ -245,15 +249,17 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         });
         return (
             <div className="col-md-6 col-sm-6 text-center">
-                <div className="panel">
+                <div className="panel" style={{minWidth: "fit-content"}}>
                     <div className="panel-heading" >
                         {/* <div className="pric-icon">
                                     <img src="images/store.png" alt="" />
                                 </div> */}
                         {/* <h3>Table 01</h3>
                                 <h3 style={{marginLeft:"20px"}}>Order 01</h3> */}
+                        <label style={{ float: "left", fontSize: "23px" }} onClick={this.back}>
+                        <i className="fa fa-arrow-circle-left" aria-hidden="true"></i></label>
+                        {/* <i className="fas fa-arrow-circle-left"/> */}
                         <label>Table {matchProp.params.tableId}</label>
-                        {/* <label>Order 01</label> */}
                     </div>
                     <div className="panel-body text-center">
                         <table className="table">
@@ -290,8 +296,8 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                             <button className="btn btn-secondary" type="button" disabled={orderList ? false : true} onClick={this.handleCancelOrder}>Cancel</button>
                             <button className="btn btn-secondary" type="button" onClick={this.handleOrder}>Order</button>
                             {
-                                order && order.statusOrder === 'Served' && <button className="btn btn-secondary" type="button" 
-                                onClick={() => this.paymentTable(matchProp.params.tableId)}>Payment</button> || "" || ""
+                                order && order.statusOrder === 'Served' && <button className="btn btn-secondary" type="button"
+                                    onClick={() => this.paymentTable(matchProp.params.tableId)}>Payment</button> || "" || ""
                             }
 
                         </div>

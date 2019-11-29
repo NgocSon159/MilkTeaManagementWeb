@@ -5,7 +5,7 @@ import { Food } from '../../model/Food';
 import { compose } from 'redux';
 import { AdditionalForm } from './modal/additional-food';
 import { Modal } from '../../../common/components/modal';
-import {GetFoodListAction, SetPageListFood} from "../../redux/action/actions";
+import { GetFoodListAction, SetPageListFood } from "../../redux/action/actions";
 
 interface StateToProps {
     food?: Food[];
@@ -40,7 +40,7 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
     };
 
     componentDidMount() {
-        const {pageFood} = this.state;
+        const { pageFood } = this.state;
         this.props.setPageListFood(pageFood);
         this.props.getFoodList();
     }
@@ -50,22 +50,22 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
         });
     }
 
-    forward = (e: any) =>  {
+    forward = (e: any) => {
         e.preventDefault();
-        const {pageFood} = this.state;
+        const { pageFood } = this.state;
         pageFood.pageIndex = Number(pageFood.pageIndex) + 1;
         this.props.setPageListFood(pageFood);
         this.props.getFoodList();
-        this.setState({pageFood});
+        this.setState({ pageFood });
     }
 
-    back = (e: any) =>  {
+    back = (e: any) => {
         e.preventDefault();
-        const {pageFood} = this.state;
+        const { pageFood } = this.state;
         pageFood.pageIndex = Number(pageFood.pageIndex) - 1;
         this.props.setPageListFood(pageFood);
         this.props.getFoodList();
-        this.setState({pageFood});
+        this.setState({ pageFood });
     }
 
     public render(): React.ReactNode {
@@ -77,7 +77,7 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
         //     <div className="col-md-7 col-sm-7 text-center">
         //         <div className="panel product-list">
         const { food } = this.props;
-        const {openModal, foodItem, pageFood} = this.state;
+        const { openModal, foodItem, pageFood } = this.state;
         const resultAll: any[] = [];
         const foodItemArr: string[] = [];
         if (food) {
@@ -110,11 +110,12 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
                         resultAll
                     }
                 </div>
-                <button onClick={(e) => this.back(e)} className="btn btn-secondary" type="button" aria-label="" disabled={(pageFood.pageIndex === 1) ? true : false}>Back</button>
-                <button className="btn btn-secondary" type="button" aria-label="">{pageFood.pageIndex}</button>
+                <button onClick={(e) => this.back(e)} className="btn btn-secondary" style={{ marginRight: "3px" }} type="button" aria-label=""
+                    disabled={(pageFood.pageIndex === 1) ? true : false}>Back</button>
+                <button className="btn btn-secondary" type="button" style={{ marginRight: "3px" }}>{pageFood.pageIndex}</button>
                 <button onClick={(e) => this.forward(e)} className="btn btn-secondary" type="button" aria-label="">Forward</button>
-              <Modal show={openModal} handleClose={this.hideModal} title="FOOD FUNDAY">
-                    <AdditionalForm foodInfo={foodItem} closeModal={this.hideModal}/>
+                <Modal show={openModal} handleClose={this.hideModal} title="FOOD FUNDAY">
+                    <AdditionalForm foodInfo={foodItem} closeModal={this.hideModal} />
                 </Modal>
             </div>
         )
