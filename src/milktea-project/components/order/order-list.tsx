@@ -46,7 +46,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
             openModal: false,
             food: {},
             amount: 0,
-            isOpen: false
+            isOpen: false,
+            quantity: 1,
+            icePer: "",
+            sugarPer: ""
         }
     }
 
@@ -55,10 +58,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         // @ts-ignore
         this.props.getOrderFromTable(Number(matchProp.params.tableId));
     }
-    handleOnChange = (e: any)  => {
-        const {name, value} = e.target;
+    handleOnChange = (e: any) => {
+        const { name, value } = e.target;
         this.setState({
-            [name ]: value
+            [name]: value
         });
     }
     onRemoveFood = (foodId: string) => {
@@ -76,7 +79,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         this.setState({
             openModal: true,
             food,
-            isOpen: true
+            // isOpen: true
+            quantity: food.quantity,
+            icePer: food.icePercent,
+            sugarPer: food.sugarPercent
         });
     }
 
@@ -136,16 +142,65 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         }, 1000);
     }
 
+    increase = () => {
+        let { quantity } = this.state;
+        // const { quantity } = this.props.food;
+        // let val  quantity;
+        this.setState({
+            quantity: ++quantity
+        });
+    }
+    decrease = () => {
+        let { quantity } = this.state;
+        // const { quantity } = this.props.food;
+        // let val = amount || quantity;
+        if (quantity > 0) {
+            this.setState({
+                quantity: --quantity
+            });
+        }
+    }
+
+    resetForm = (food: any) => {
+        this.setState({
+            quantity: food.quantity,
+            icePer: food.icePercent,
+            sugarPer: food.sugarPercent
+        });
+    }
+
+    onCancel = () => {
+        const { food } = this.state;
+        this.hideModal();
+        this.resetForm(food);
+    }
+    onUpdate = (food: any) => {
+        const { quantity, sugarPer, icePer } = this.state;
+        const { orderList, updateOrderList } = this.props;
+        const foodItem = {
+            ...food,
+            quantity,
+            sugarPercent: sugarPer,
+            icePercent: icePer
+        }
+        const index = orderList.findIndex((oderFood: any) => oderFood.foodId === food.foodId);
+        if (index !== -1) {
+            orderList[index] = foodItem;
+            updateOrderList(orderList);
+        }
+        this.hideModal();
+        this.resetForm(food);
+    }
     public render(): React.ReactNode {
         const { matchProp = { params: { tableId: "" } }, loginInfo = {}, order } = this.props;
         const { orderList } = this.props;
         const { openModal, food, amount, isOpen } = this.state;
-        console.log('amount', amount);
+        const { quantity, icePer, sugarPer } = this.state;
+        // console.log('amount', amount);
         // if (loginInfo) {
         //     this.subcribe(loginInfo);
         // }
         const { userName = "" } = loginInfo;
-        // const listFood = order.foods || orderList;
         let totalPrice = 0;
         const orderFoods = order && order.foods && order.foods.map((food: any, idx: any) => {
             totalPrice = totalPrice + food.sum;
@@ -232,7 +287,55 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                     </div>
                 </div>
                 <Modal show={openModal} handleClose={this.hideModal} title="UPDATE FOOD">
-                    {!isOpen ? "" : <EditFoodForm hideModal={this.hideModal} food={food}/>}
+                    <div className="col-md-12 col-sm-12" >
+                        <div className="group-item">
+                            <span>Amount:</span>
+                            <div className="counter">
+                                <span onClick={this.decrease}><i />-</span>
+                                <span><input readOnly value={quantity}
+                                    name="quantity"
+                                    onChange={this.handleOnChange} /></span>
+                                <span onClick={this.increase}>+<i /></span>
+                            </div>
+                        </div>
+                        <div className="group-item">
+                            <span>Sugar percent:</span>
+                            <div className="sugar-percent-info">
+                                <input name="sugarPer" type="radio" value="25%" checked={sugarPer === "25%"} onChange={(e) => this.handleOnChange(e)} style={{ marginLeft: "22px" }} />
+                                <label>25%</label>
+                                <input name="sugarPer" type="radio" value="50%" checked={sugarPer === "50%"} onChange={(e) => this.handleOnChange(e)} />
+                                <label>50%</label> <br />
+                                <input name="sugarPer" type="radio" value="75%" style={{ marginLeft: "120px" }} checked={sugarPer === "75%"}
+                                    onChange={(e) => this.handleOnChange(e)} />
+                                <label>75%</label>
+                                <input name="sugarPer" type="radio" value="100%" checked={sugarPer === "100%"} onChange={(e) => this.handleOnChange(e)} />
+                                <label>100%</label>
+                            </div>
+                        </div>
+                        <div className="group-item">
+                            <span>Ice percent:</span>
+                            <div className="ice-percent-info">
+                                <input name="icePer" type="radio" value="25%" checked={icePer === "25%"} onChange={this.handleOnChange} style={{ marginLeft: "22px" }} />
+                                <label>25%</label>
+                                <input name="icePer" type="radio" value="50%" checked={icePer === "50%"} onChange={this.handleOnChange} />
+                                <label>50%</label><br />
+                                <input name="icePer" type="radio" value="75%" checked={icePer === "75%"} onChange={this.handleOnChange} style={{ marginLeft: "120px" }} />
+                                <label>75%</label>
+                                <input name="icePer" type="radio" value="100%" checked={icePer === "100%"} onChange={this.handleOnChange} />
+                                <label>100%</label>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-warning"
+                                onClick={this.onCancel}>
+                                Cancel
+                </button>
+                            <button type="button" className="btn btn-primary"
+                                onClick={() => this.onUpdate(food)}>
+                                Update
+                </button>
+                        </div>
+                    </div>
                 </Modal>
             </div>
         )

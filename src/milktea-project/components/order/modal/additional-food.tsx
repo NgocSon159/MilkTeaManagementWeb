@@ -233,10 +233,10 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
                                 <label>100%</label>
                             </div>
                         </div>
-                        <div className="group-item">
+                        {/* <div className="group-item">
                             <span className="note-info">Note:</span>
                             <textarea name="note" value={note} onChange={this.handleOnChange} placeholder="enter some note..."></textarea>
-                        </div>
+                        </div> */}
                         <div className="group-item">
                             <span className="price-info">Price:</span>
                             <label className="price-input">{foodInfo[0] && foodInfo[0].price.toLocaleString()} vnd</label>
