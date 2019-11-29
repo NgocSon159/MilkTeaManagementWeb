@@ -130,7 +130,7 @@ export default class AdditionalComponent extends React.Component<IProps & Dispat
     }
     decrease = () => {
         let { counter } = this.state;
-        if (counter > 0) {
+        if (counter > 1) {
             this.setState({
                 counter: --counter
             });

@@ -132,6 +132,10 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         // this.props.history.push('/order');
     }
 
+    handleCancelOrder = () => {
+        this.props.updateOrderList([]);
+    }
+
     paymentTable = (tableId: any) => {
         const { history } = this.props;
         // @ts-ignore
@@ -154,7 +158,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         let { quantity } = this.state;
         // const { quantity } = this.props.food;
         // let val = amount || quantity;
-        if (quantity > 0) {
+        if (quantity > 1) {
             this.setState({
                 quantity: --quantity
             });
@@ -209,7 +213,9 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                 <td>{food.size}</td>
                 <td>{food.quantity}</td>
                 <td>{food.sum}</td>
-                <td>{food.sugarPercent} - {food.icePercent}</td>
+                {/* <td>{food.sugarPercent} - {food.icePercent}</td> */}
+                <td>{food.sugarPercent}</td>
+                <td>{food.icePercent}</td>
                 <td>
                     {/* <button disabled={true}>
                     <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" /></span>
@@ -227,7 +233,9 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                 {/* <td><input name="amount" value={amountValue} style={{width: "50px"}} onChange={this.handleOnChange}/></td> */}
                 <td>{food.quantity}</td>
                 <td>{food.sum}</td>
-                <td>{food.sugarPercent} - {food.icePercent}</td>
+                {/* <td>{food.sugarPercent} - {food.icePercent}</td> */}
+                <td>{food.sugarPercent}</td>
+                <td>{food.icePercent}</td>
                 <td>
                     <span onClick={() => this.onRemoveFood(food.foodId)}><i className="fa fa-minus-circle" />
                     </span>
@@ -236,7 +244,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
             </tr>
         });
         return (
-            <div className="col-md-5 col-sm-5 text-center">
+            <div className="col-md-6 col-sm-6 text-center">
                 <div className="panel">
                     <div className="panel-heading" >
                         {/* <div className="pric-icon">
@@ -245,7 +253,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                         {/* <h3>Table 01</h3>
                                 <h3 style={{marginLeft:"20px"}}>Order 01</h3> */}
                         <label>Table {matchProp.params.tableId}</label>
-                        <label>Order 01</label>
+                        {/* <label>Order 01</label> */}
                     </div>
                     <div className="panel-body text-center">
                         <table className="table">
@@ -255,7 +263,9 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                                     <th>Size</th>
                                     <th>Amount</th>
                                     <th>Price</th>
-                                    <th>Note</th>
+                                    {/* <th>Note</th> */}
+                                    <th>SugarPer</th>
+                                    <th>IcePer</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -277,10 +287,11 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                     </div>
                     <div className="panel-footer">
                         <div className="input-group">
-                            <button className="btn btn-secondary" type="button" disabled={true}>Cancel</button>
+                            <button className="btn btn-secondary" type="button" disabled={orderList ? false : true} onClick={this.handleCancelOrder}>Cancel</button>
                             <button className="btn btn-secondary" type="button" onClick={this.handleOrder}>Order</button>
                             {
-                                order && order.statusOrder === 'Served' && <button className="btn btn-secondary" type="button" onClick={() => this.paymentTable(matchProp.params.tableId)}>Payment</button> || "" || ""
+                                order && order.statusOrder === 'Served' && <button className="btn btn-secondary" type="button" 
+                                onClick={() => this.paymentTable(matchProp.params.tableId)}>Payment</button> || "" || ""
                             }
 
                         </div>

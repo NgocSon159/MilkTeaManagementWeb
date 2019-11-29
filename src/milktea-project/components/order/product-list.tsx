@@ -104,7 +104,7 @@ export class ProductListComponent extends React.Component<StateToProps & Dispatc
             });
         }
         return (
-            <div className="col-md-7 col-sm-7 text-center">
+            <div className="col-md-6 col-sm-6 text-center">
                 <div className="panel product-list">
                     {
                         resultAll
