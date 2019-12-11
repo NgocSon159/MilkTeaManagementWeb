@@ -12,6 +12,13 @@ export const OrderEpic = (action$: any, state$: any) => action$.pipe(
     )
     ));
 
+export const ReOrderEpic = (action$: any, state$: any) => action$.pipe(
+    ofType(ActionType.REORDER),
+    mergeMap(() => from(ApiCall('put', 'order/reOrder', state$.value.orderState.order)).pipe(
+        map((res: any) => CancelAction())
+    )
+    ));
+
 export const PaymentOrderEpic = (action$: any, state$: any) => action$.pipe(
     ofType(ActionType.GET_PAYMENT_ORDER),
     mergeMap((action$: any) => from(ApiCall('get', `table/getOrder/${action$.tableId}`, null)).pipe(
@@ -26,9 +33,9 @@ export const MemberEpic = (action$: any, state$: any) => action$.pipe(
     )
     ));
 
-    export const postPaymentOrderEpic = (action$: any, state$: any) => action$.pipe(
-        ofType(ActionType.POST_PAYMENT_ORDER),
-        mergeMap((action$: any) => from(ApiCall('put', `order/user/cashier/payment/${action$.postOrder['completedBy']}`, action$.postOrder)).pipe(
-            map((res: any) => UpdatePaymentOrder(res.data))
-        )
-        )); 
+export const postPaymentOrderEpic = (action$: any, state$: any) => action$.pipe(
+    ofType(ActionType.POST_PAYMENT_ORDER),
+    mergeMap((action$: any) => from(ApiCall('put', `order/user/cashier/payment/${action$.postOrder['completedBy']}`, action$.postOrder)).pipe(
+        map((res: any) => UpdatePaymentOrder(res.data))
+    )
+    )); 

@@ -6,7 +6,8 @@ import {
     PostOrder,
     UpdateOrder,
     GetOrderFromTable,
-    RequestPaymentTable
+    RequestPaymentTable,
+    RetOrder
 } from '../../redux/action/actions';
 import { Order } from '../../model/Order';
 import socketIo from "socket.io-client";
@@ -30,6 +31,7 @@ interface StateToProps {
 interface DispatchToProps {
     updateOrderList: (orderList: any) => void;
     postOrder?: () => void;
+    reOrder?: () => void;
     updateOrderToState?: (data: any) => void;
     getOrderFromTable?: (tableId: number) => void;
     // updateOrderList?: (orderList: any) => void;
@@ -97,8 +99,9 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
 
     handleOrder = (e: any) => {
         e.preventDefault();
-        const { orderList, matchProp = { params: { tableId: "" } }, loginInfo = {}, history } = this.props;
+        const { orderList, matchProp = { params: { tableId: "" } }, loginInfo = {}, history, order } = this.props;
         const { userName = "" } = loginInfo;
+        let orderId = order && order.orderId;
         let totalPrice = 0;
         orderList && orderList.map((food: any) => {
             totalPrice = totalPrice + food.sum;
@@ -117,12 +120,19 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
             total: totalPrice,
             cash: 0,
             change: 0,
-            foods: orderList
+            foods: [...orderList,...order.foods]
         }
         // @ts-ignore
         this.props.updateOrderToState(data);
         // @ts-ignore
-        this.props.postOrder();
+        if (orderId) {
+            // @ts-ignore
+            this.props.reOrder();
+        } else {
+            // @ts-ignore
+            this.props.postOrder();
+
+        }
 
         setTimeout(function () {
             socket.emit("baristaUpdate");
@@ -184,6 +194,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         const foodItem = {
             ...food,
             quantity,
+            sum: Number(quantity)*Number(food.price),
             sugarPercent: sugarPer,
             icePercent: icePer
         }
@@ -229,6 +240,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
             </tr>
         });
         const orderListFoods = orderList && orderList.map((food: any) => {
+            console.log('food.sum', food.sum);
             totalPrice = totalPrice + food.sum;
             let amountValue = amount ? amount : food.quantity;
             return <tr key={food.foodId}>
@@ -249,7 +261,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
         });
         return (
             <div className="col-md-6 col-sm-6 text-center">
-                <div className="panel" style={{minWidth: "fit-content"}}>
+                <div className="panel" style={{ minWidth: "fit-content" }}>
                     <div className="panel-heading" >
                         {/* <div className="pric-icon">
                                     <img src="images/store.png" alt="" />
@@ -257,7 +269,7 @@ export class OrderListComponent extends React.Component<IProps & StateToProps & 
                         {/* <h3>Table 01</h3>
                                 <h3 style={{marginLeft:"20px"}}>Order 01</h3> */}
                         <label style={{ float: "left", fontSize: "23px" }} onClick={this.back}>
-                        <i className="fa fa-arrow-circle-left" aria-hidden="true"></i></label>
+                            <i className="fa fa-arrow-circle-left" aria-hidden="true"></i></label>
                         {/* <i className="fas fa-arrow-circle-left"/> */}
                         <label>Table {matchProp.params.tableId}</label>
                     </div>
@@ -372,6 +384,7 @@ export function mapDispatchToProps(dispatch: any): DispatchToProps {
     return {
         updateOrderList: (orderList) => dispatch(UpdateOrderList(orderList)),
         postOrder: () => dispatch(PostOrder()),
+        reOrder: () => dispatch(RetOrder()),
         updateOrderToState: (data) => dispatch(UpdateOrder(data)),
         getOrderFromTable: (tableId) => dispatch(GetOrderFromTable(tableId)),
         paymentTable: (tableId) => dispatch(RequestPaymentTable(tableId))

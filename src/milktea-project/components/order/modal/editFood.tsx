@@ -72,14 +72,17 @@ export default class EditFoodComponent extends React.Component<IProps & StateToP
         this.resetForm();
     }
     onUpdate = (food: any) => {
+        debugger;
         const { amount, sugarPercent, icePercent } = this.state;
         const { orderList, updateOrderList } = this.props;
         const foodItem = {
             ...food,
             quantity: amount,
+            sum: Number(amount)*Number(food.price),
             sugarPercent,
             icePercent
         }
+        console.log('foodItem',foodItem);
         const index = orderList.findIndex((oderFood: any) => oderFood.foodId === food.foodId);
         if (index !== -1) {
             orderList[index] = foodItem;

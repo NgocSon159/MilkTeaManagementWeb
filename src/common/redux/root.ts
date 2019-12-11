@@ -1,4 +1,8 @@
-import { OrderEpic, PaymentOrderEpic, MemberEpic, postPaymentOrderEpic } from './../../milktea-project/redux/epics/orderEpics';
+import { OrderEpic, 
+        PaymentOrderEpic, 
+        MemberEpic, 
+        postPaymentOrderEpic, 
+        ReOrderEpic } from './../../milktea-project/redux/epics/orderEpics';
 import { combineReducers } from 'redux';
 import { initReducer } from '../../milktea-project/redux/reducer/initReducer';
 import { orderReducer } from '../../milktea-project/redux/reducer/orderReducer';
@@ -25,6 +29,7 @@ export const RootEpic: any = combineEpics(
     LoginEpic,
     FoodEpic,
     OrderEpic,
+    ReOrderEpic,
     OrderFromTableEpic,
     PaymentTableEpic
     );

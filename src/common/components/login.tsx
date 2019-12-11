@@ -31,7 +31,12 @@ export class LoginComponent extends React.Component<DispatchToProps & StateToPro
         const { username, password } = this.state;
         this.props.setFormInfor({ userName: username, password });
         this.props.getLoginInfor(); //login
-        this.setState({ isLogin: true });
+        setTimeout(() => {
+            localStorage.setItem('loginInfor', JSON.stringify(this.props.loginInfo));
+            this.setState({ isLogin: true });
+        }, 1000);
+        // localStorage.setItem('loginInfor', JSON.stringify(this.props.loginInfo));
+        
     }
 
     handleRedirect = () => {

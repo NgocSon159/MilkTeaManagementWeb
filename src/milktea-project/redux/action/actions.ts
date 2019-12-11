@@ -60,6 +60,9 @@ export const SetPageListFood = (pageFood: any) => createAction({
 export const PostOrder = () => createAction({
     type: actionType.POST_ORDER,
 });
+export const RetOrder = () => createAction({
+    type: actionType.REORDER,
+});
 
 export const UpdateOrder = (order: any) => createAction({
     type: actionType.UPDATE_ORDER,
